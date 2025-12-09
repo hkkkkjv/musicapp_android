@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -5,9 +6,10 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-//    alias(libs.plugins.google.services)
-//    alias(libs.plugins.firebase.crashlytics)
-//    alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.detekt)
 }
 
 android {
@@ -26,7 +28,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            //isMinifyEnabled = true
+            //isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -39,11 +42,16 @@ android {
     }
     kotlin {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_11
+            jvmTarget.set(JvmTarget.JVM_11)
+            allWarningsAsErrors.set(false)
+            freeCompilerArgs.addAll(
+                "-Xopt-in=kotlin.RequiresOptIn"
+            )
         }
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -99,10 +107,10 @@ dependencies {
     implementation(libs.coil)
 
     // Firebase
-//    implementation(platform(libs.firebase.bom))
-//    implementation(libs.firebase.analytics)
-//    implementation(libs.firebase.crashlytics)
-//    implementation(libs.firebase.perf)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perf)
 
     // Testing
     testImplementation(libs.junit)
@@ -112,5 +120,27 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
+    detektPlugins(libs.detekt.formatting)
 
+}
+
+detekt {
+    config.setFrom("${rootProject.projectDir}/detekt.yml")
+    autoCorrect = false
+
+    reports {
+        html.required.set(true)
+        txt.required.set(false)
+        xml.required.set(false)
+        sarif.required.set(false)
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
+}
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = "1.8"
 }
