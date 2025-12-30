@@ -38,6 +38,7 @@ import ru.kpfu.itis.impl.utils.username.UsernameValidator
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import kotlin.coroutines.resumeWithException
+
 @Suppress("LongParameterList")
 class AuthViewModel @Inject constructor(
     private val firebaseAuth: FirebaseAuth,
@@ -52,7 +53,6 @@ class AuthViewModel @Inject constructor(
     private val errorMessageMapper: ErrorMessageMapper,
     private val reducer: AuthReducer = AuthReducer(),
     private val stringProvider: StringProvider,
-    applicationContext: Context
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(
