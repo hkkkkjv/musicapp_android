@@ -1,3 +1,69 @@
 <resources>
-    <string name="app_name">MusicApp</string>
+    <string name="sign_in_to_continue">Sign in to continue</string>
+
+    <string name="btn_log_in">Log In</string>
+    <string name="btn_sign_up">Sign Up</string>
+    <string name="btn_dont_have_account">Don\'t have an account? Sign Up</string>
+
+    <string name="title_create_account">Create Account</string>
+    <string name="label_enter_your_name">Enter your name</string>
+    <string name="hint_name">John Doe</string>
+    <string name="label_name">Name</string>
+    <string name="btn_next">Next</string>
+
+    <string name="title_sign_up">Sign Up</string>
+    <string name="title_log_in">Log In</string>
+    <string name="label_enter_your_phone">Enter your phone number</string>
+    <string name="hint_phone">9005553535</string>
+    <string name="label_phone">Phone Number</string>
+    <string name="btn_send_code">Send Code</string>
+
+    <string name="title_verify_number">Verify Your Number</string>
+    <string name="label_we_sent_code">We sent a code to your phone</string>
+    <string name="label_code">Code</string>
+    <string name="hint_code">123456</string>
+    <string name="label_attempts_left">Attempts left: %d</string>
+    <string name="btn_verify">Verify</string>
+    <string name="btn_resend_code">Resend Code</string>
+    <string name="label_resend_in">Resend in %ds</string>
+
+    <string name="dialog_error_title">Error</string>
+    <string name="btn_ok">OK</string>
+
+    <string name="error_username_empty">Name cannot be empty</string>
+    <string name="error_username_too_short">Name must be at least 2 characters</string>
+    <string name="error_username_too_long">Name cannot exceed 50 characters</string>
+    <string name="error_username_invalid_chars">Name contains invalid characters</string>
+
+    <string name="error_phone_empty">Phone number cannot be empty</string>
+    <string name="error_phone_too_short">Phone number must be 10 digits</string>
+    <string name="error_phone_too_long">Phone number cannot exceed 10 digits</string>
+    <string name="error_phone_invalid_chars">Phone number contains invalid characters</string>
+
+    <string name="error_code_empty">Code cannot be empty</string>
+    <string name="error_code_invalid_length">Code must be exactly 6 digits</string>
+    <string name="error_code_invalid_chars">Code contains invalid characters</string>
+
+    <string name="error_phone_already_registered">This phone is already registered. Try logging in.</string>
+    <string name="error_phone_not_registered">This phone is not registered. Please sign up first.</string>
+    <string name="error_user_not_authenticated">User is not authenticated. Please try again.</string>
+    <string name="error_phone_number_not_found">Phone number not found. Please try again.</string>
+    <string name="error_failed_to_check_phone">Failed to check phone registration. Please try again.</string>
+    <string name="error_registration_failed">Registration failed. Please try again.</string>
+
+    <string name="error_user_is_null">User verification failed. Please try again.</string>
+    <string name="error_phone_is_null">Phone number verification failed. Please try again.</string>
+    <string name="error_wrong_code">Wrong code! %d attempts left</string>
+    <string name="error_too_many_attempts">Too many attempts! Please try again later.</string>
+    <string name="error_failed_to_verify_code">Failed to verify code. Please try again.</string>
+
+    <string name="error_login_failed">Login failed. Please try again.</string>
+
+    <string name="error_logout_failed">Logout failed. Please try again.</string>
+
+    <string name="error_network">Network error. Please check your connection and try again.</string>
+    <string name="error_auth_failed">Authentication failed. Please try again.</string>
+    <string name="error_something_went_wrong">Something went wrong. Please try again.</string>
+
+    <string name="sms_wait_before_resend">Wait %d seconds before resending</string>
 </resources>

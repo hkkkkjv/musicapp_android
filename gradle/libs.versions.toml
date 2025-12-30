@@ -1,15 +1,20 @@
 [versions]
 #Core
-gradle = "8.10.1"
-kotlin = "2.3.0-RC2"
+gradle = "8.10.0"
+kotlin = "2.2.0"
 coreKtx = "1.17.0"
 junitVersion = "1.3.0"
 lifecycleRuntimeKtx = "2.10.0"
 composeBom = "2025.12.00"
 
+loggingInterceptor = "5.3.0"
+minSdk = "27"
+compileSdk = "36"
+targetSdk = "35"
+
 # AndroidX
 androidx-core = "1.13.1"
-androidx-appcompat = "1.7.0"
+androidx-appcompat = "1.7.1"
 androidx-lifecycle = "2.8.0"
 androidx-room = "2.8.4"
 androidx-navigation = "2.9.6"
@@ -21,7 +26,7 @@ androidx-datastore = "1.0.0"
 # Kotlin
 kotlin-coroutines = "1.9.0"
 kotlin-serialization = "1.9.0"
-ksp="2.3.3"
+ksp="2.2.0-2.0.2"
 
 # Network
 retrofit = "3.0.0"
@@ -35,7 +40,7 @@ dagger = "2.56.2"
 room = "2.8.4"
 
 # Firebase
-firebase-bom = "34.6.0"
+firebase-bom = "34.7.0"
 
 # Coil (Image Loading)
 coil = "2.6.0"
@@ -50,6 +55,10 @@ androidx-test-espresso = "3.7.0"
 
 # Detekt
 detekt = "1.23.3"
+gradle-secrets="2.0.1"
+material = "1.13.0"
+firebaseAuthKtx = "24.0.1"
+firebaseFirestoreKtx = "26.0.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +81,7 @@ androidx-compose-material = { group = "androidx.compose.material", name = "mater
 androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidx-compose-material3" }
 androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "androidx-compose-material-icons" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version = "1.12.1" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
 
 # Kotlin Coroutines
 kotlin-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlin-coroutines" }
@@ -83,6 +93,7 @@ kotlinx-serialization-core = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 
 # Network
+logging-interceptor-v530 = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 retrofit = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlinx-serialization = { group = "com.squareup.retrofit2", name = "converter-kotlinx-serialization", version.ref = "retrofit" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
@@ -100,6 +111,9 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore" }
+
 
 # Testing
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -119,9 +133,13 @@ androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-toolin
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "gradle" }
+android-library = { id = "com.android.library"}
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp={id="com.google.devtools.ksp",version.ref = "ksp"}
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
@@ -130,3 +148,4 @@ detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 google-services = { id = "com.google.gms.google-services", version = "4.4.4" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version = "3.0.6" }
 firebase-perf = { id = "com.google.firebase.firebase-perf", version = "2.0.2" }
+gradle-secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugin", version.ref = "gradle-secrets" }

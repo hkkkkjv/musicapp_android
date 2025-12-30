@@ -1,3 +1,4 @@
+import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -5,25 +6,42 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-//    alias(libs.plugins.google.services)
-//    alias(libs.plugins.firebase.crashlytics)
-//    alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
+    alias(libs.plugins.firebase.perf)
+    alias(libs.plugins.gradle.secrets)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.detekt)
 }
-
 android {
     namespace = "ru.kpfu.itis.musicapp"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
         applicationId = "ru.kpfu.itis.musicapp"
-        minSdk = 27
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
+        versionCode = rootProject.extra.get("versionCode") as Int
+        versionName = rootProject.extra.get("versionName") as String
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
-
+    packaging {
+        resources {
+            excludes += listOf(
+                "META-INF/versions/9/OSGI-INF/MANIFEST.MF",
+                "META-INF/versions/*/OSGI-INF/MANIFEST.MF",
+                "META-INF/MANIFEST.MF",
+                "META-INF/*.properties",
+                "META-INF/proguard/*.pro",
+                "META-INF/versions/*/module-info.class",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/licenses/**"
+            )
+        }
+    }
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -44,10 +62,14 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
+    implementation(projects.core)
+    implementation(projects.feature.auth.api)
+    implementation(projects.feature.auth.impl)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -66,6 +88,7 @@ dependencies {
 
     //Retrofit2
     implementation(libs.retrofit)
+    implementation(libs.logging.interceptor.v530)
 
     //Room
     implementation(libs.androidx.room.runtime)
@@ -99,10 +122,13 @@ dependencies {
     implementation(libs.coil)
 
     // Firebase
-//    implementation(platform(libs.firebase.bom))
-//    implementation(libs.firebase.analytics)
-//    implementation(libs.firebase.crashlytics)
-//    implementation(libs.firebase.perf)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perf)
+    implementation(libs.firebase.auth)
+    implementation(libs.firebase.firestore)
+
 
     // Testing
     testImplementation(libs.junit)
@@ -112,5 +138,26 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
+    detektPlugins(libs.detekt.formatting)
+}
 
+detekt {
+    config.setFrom("${rootProject.projectDir}/detekt.yml")
+    autoCorrect = false
+
+    reports {
+        html.required.set(true)
+        txt.required.set(false)
+        xml.required.set(false)
+        sarif.required.set(false)
+    }
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_11)
+    }
+}
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = "1.8"
 }
