@@ -1,53 +1,65 @@
 package ru.kpfu.itis.musicapp.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ru.kpfu.itis.auth.api.AuthEvent
-import ru.kpfu.itis.auth.api.AuthState
-import ru.kpfu.itis.impl.presentation.screens.AuthScreen
+import ru.kpfu.itis.core.network.firebase.analytics.AnalyticsManager
 import ru.kpfu.itis.impl.presentation.mvi.AuthViewModel
-import ru.kpfu.itis.musicapp.ui.theme.HomeScreen
+import ru.kpfu.itis.impl.presentation.screens.AuthScreen
+import ru.kpfu.itis.song.impl.presentation.SearchScreen
+import ru.kpfu.itis.song.impl.presentation.SearchViewModel
+import ru.kpfu.itis.song.impl.presentation.details.SongDetailsScreen
+import ru.kpfu.itis.song.impl.presentation.details.SongDetailsViewModel
 
 @Composable
 fun AppNavGraph(
     navController: NavHostController,
-    authViewModel: AuthViewModel
+    startDestination: Any,
+    viewModelFactory: ViewModelProvider.Factory,
+    analyticsManager: AnalyticsManager,
 ) {
-    val authState by authViewModel.state.collectAsState()
-
-    val startDestination = when (authState) {
-        is AuthState.Authenticated -> Routes.Home
-        else -> Routes.Auth
-    }
-
     NavHost(
         navController = navController,
         startDestination = startDestination
     ) {
         composable<Routes.Auth> {
+            val authViewModel: AuthViewModel = viewModel(factory = viewModelFactory)
             AuthScreen(
                 viewModel = authViewModel,
                 onNavigateToHome = {
-                    navController.navigate(Routes.Home) {
-                        popUpTo(Routes.Home) { inclusive = true }
+                    navController.navigate(Routes.Search) {
+                        popUpTo(Routes.Search) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable<Routes.Home> {
-            HomeScreen(
-                authViewModel = authViewModel,
-                onLogout = {
-                    authViewModel.onEvent(AuthEvent.OnLogout)
-                    navController.navigate(Routes.Auth) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                }
+        composable<Routes.Search> {
+            val searchViewModel: SearchViewModel = viewModel(factory = viewModelFactory)
+
+            SearchScreen(
+                viewModel = searchViewModel,
+                onOpenDetails = { songId ->
+                    navController.navigate(
+                        Routes.SongDetails(songId = songId)
+                    )
+                },
+                analyticsManager = analyticsManager
+
+            )
+        }
+        composable<Routes.SongDetails> { backStackEntry ->
+            val songId = backStackEntry.arguments?.getString("songId") ?: return@composable
+            val songDetailsViewModel: SongDetailsViewModel = viewModel(factory = viewModelFactory)
+
+            SongDetailsScreen(
+                viewModel = songDetailsViewModel,
+                songId = songId,
+                onBack = { navController.popBackStack() },
+                analyticsManager = analyticsManager,
             )
         }
     }

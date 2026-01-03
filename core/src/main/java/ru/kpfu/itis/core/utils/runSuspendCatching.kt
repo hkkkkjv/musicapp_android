@@ -1,4 +1,4 @@
-package ru.kpfu.itis.impl.utils
+package ru.kpfu.itis.core.utils
 
 import kotlinx.coroutines.CancellationException
 
