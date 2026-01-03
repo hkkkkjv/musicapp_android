@@ -11,11 +11,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.core.utils.StringProvider
+import ru.kpfu.itis.song.impl.R
 import ru.kpfu.itis.song.impl.domain.SearchSongsUseCase
 import javax.inject.Inject
 
 class SearchViewModel @Inject constructor(
-    private val searchSongsUseCase: SearchSongsUseCase
+    private val searchSongsUseCase: SearchSongsUseCase,
+    private val stringProvider: StringProvider,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SearchState())
@@ -88,9 +91,9 @@ class SearchViewModel @Inject constructor(
 
         if (trimmedQuery.isEmpty()) {
             viewModelScope.launch {
-                _effects.emit(SearchEffect.ShowToast("Enter song or artist name"))
+                _effects.emit(SearchEffect.ShowToast(stringProvider.getString(R.string.enter_song_or_artist_name)))
             }
-            _state.update { it.copy(error = "Enter song or artist name") }
+            _state.update { it.copy(error = stringProvider.getString(R.string.enter_song_or_artist_name)) }
             return
         }
 
@@ -109,7 +112,7 @@ class SearchViewModel @Inject constructor(
                             results = result.songs.toImmutableList(),
                             query = trimmedQuery,
                             error = if (result.songs.isEmpty()) {
-                                "No songs found"
+                                stringProvider.getString(R.string.no_songs_found)
                             } else {
                                 null
                             },
@@ -119,7 +122,7 @@ class SearchViewModel @Inject constructor(
 
                     if (result.songs.isEmpty()) {
                         viewModelScope.launch {
-                            _effects.emit(SearchEffect.ShowToast("No songs found"))
+                            _effects.emit(SearchEffect.ShowToast(stringProvider.getString(R.string.no_songs_found)))
                         }
                     }
                 }
@@ -127,14 +130,14 @@ class SearchViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            error = error.message ?: "Search failed",
+                            error = stringProvider.getString(R.string.search_failed),
                             isInitialized = true
                         )
                     }
 
                     viewModelScope.launch {
                         _effects.emit(
-                            SearchEffect.ShowToast(error.message ?: "Search failed")
+                            SearchEffect.ShowToast(stringProvider.getString(R.string.search_failed))
                         )
                     }
                 }
