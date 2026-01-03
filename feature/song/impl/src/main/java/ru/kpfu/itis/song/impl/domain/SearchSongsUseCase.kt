@@ -11,5 +11,4 @@ class SearchSongsUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(query: String): SearchResult =
         repository.searchSongs(query.trim())
-
 }

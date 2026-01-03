@@ -129,7 +129,7 @@ class SearchRepositoryImpl @Inject constructor(
                 )
             }
 
-            else -> error("Unknown song id format: $id")
+            else -> throw IllegalArgumentException()
         }
     }
 

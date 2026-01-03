@@ -9,11 +9,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import ru.kpfu.itis.song.impl.domain.GetSongDetailsUseCase
+import ru.kpfu.itis.core.utils.StringProvider
+import ru.kpfu.itis.song.impl.R
+import ru.kpfu.itis.song.impl.domain.GetSongDetailsUseCaseImpl
 import javax.inject.Inject
 
 class SongDetailsViewModel @Inject constructor(
-    private val getSongDetailsUseCase: GetSongDetailsUseCase,
+    private val getSongDetailsUseCaseImpl: GetSongDetailsUseCaseImpl,
+    private val stringProvider: StringProvider
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SongDetailsState(isLoading = true))
@@ -48,7 +51,7 @@ class SongDetailsViewModel @Inject constructor(
             _state.update {
                 it.copy(
                     isLoading = false,
-                    error = "Song id is missing",
+                    error = stringProvider.getString(R.string.song_id_is_missing),
                     isInitialized = true
                 )
             }
@@ -57,7 +60,7 @@ class SongDetailsViewModel @Inject constructor(
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
 
-            runCatching { getSongDetailsUseCase(id) }
+            runCatching { getSongDetailsUseCaseImpl(id) }
                 .onSuccess { song ->
                     _state.update {
                         it.copy(
@@ -77,7 +80,7 @@ class SongDetailsViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
-                            error = error.message ?: "Failed to load song",
+                            error = stringProvider.getString(R.string.failed_to_load_song),
                             isInitialized = true
                         )
                     }

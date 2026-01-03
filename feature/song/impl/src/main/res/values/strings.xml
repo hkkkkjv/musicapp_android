@@ -21,4 +21,9 @@
     <string name="icon_music">🎵</string>
     <string name="pause">Pause</string>
     <string name="play">Play</string>
+    <string name="enter_song_or_artist_name">Enter song or artist name</string>
+    <string name="no_songs_found">No songs found</string>
+    <string name="search_failed">Search failed</string>
+    <string name="song_id_is_missing">Song id is missing</string>
+    <string name="failed_to_load_song">Failed to load song</string>
 </resources>
