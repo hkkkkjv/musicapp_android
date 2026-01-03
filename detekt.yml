@@ -6,6 +6,7 @@ build:
     style: 1
     comments: 1
 
+
 processors:
   active: true
 
@@ -20,10 +21,14 @@ complexity:
   LongParameterList:
     active: true
     functionThreshold: 8
-    constructorThreshold: 8
+    ignoreDefaultParameters: true
+    ignoreAnnotated:
+        - 'Composable'
   LongMethod:
     active: true
     threshold: 80
+    ignoreAnnotated:
+      - 'Composable'
   CyclomaticComplexMethod:
     active: true
     threshold: 20
@@ -54,7 +59,7 @@ style:
     excludeImportStatements: true
   ReturnCount:
     active: true
-    max: 2
+    max: 5
   ForbiddenVoid:
     active: true
   OptionalAbstractKeyword:

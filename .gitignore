@@ -188,3 +188,5 @@ fabric.properties
 .cxx
 
 .DS_Store
+
+.kotlin

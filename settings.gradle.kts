@@ -1,3 +1,4 @@
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 pluginManagement {
     repositories {
         google {
@@ -21,4 +22,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "MusicApp"
 include(":app")
- 
+include(":core")
+include(":feature:auth:api")
+include(":feature:auth:impl")

@@ -9,5 +9,12 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) apply false
     alias(libs.plugins.firebase.perf) apply false
     alias(libs.plugins.detekt) apply false
-    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.gradle.secrets) apply false
+
 }
+
+private val versionMajor = 1
+private val versionMinor = 0
+
+val versionName by extra(initialValue = "$versionMajor.$versionMinor")
+val versionCode by extra(initialValue = versionMajor * 1000 + versionMinor * 10)
