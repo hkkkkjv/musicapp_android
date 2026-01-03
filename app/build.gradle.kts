@@ -70,6 +70,8 @@ dependencies {
     implementation(projects.core)
     implementation(projects.feature.auth.api)
     implementation(projects.feature.auth.impl)
+    implementation(projects.feature.song.api)
+    implementation(projects.feature.song.impl)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -139,6 +141,12 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     detektPlugins(libs.detekt.formatting)
+
+
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.ui.compose)
 }
 
 detekt {

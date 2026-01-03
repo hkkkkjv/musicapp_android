@@ -21,5 +21,4 @@ class CoreModule {
     @Provides
     @Singleton
     fun provideStringProvider(context: Context): StringProvider = AppStringProvider(context)
-
 }

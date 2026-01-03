@@ -1,14 +1,14 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.gradle.kotlin.dsl.withType
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.gradle.secrets)
     alias(libs.plugins.detekt)
-
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -18,6 +18,7 @@ android {
     defaultConfig {
         minSdk = libs.versions.minSdk.get().toInt()
         buildConfigField("String", "GENUIS_BASE_URL", "\"https://api.genius.com\"")
+        buildConfigField("String", "DEEZER_BASE_URL", "\"https://api.deezer.com\"")
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -51,7 +52,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.compose.material)
     implementation(libs.androidx.lifecycle.runtime.ktx)
-
+    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
@@ -80,10 +81,15 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso)
 
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
     detektPlugins(libs.detekt.formatting)
 
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.ui.compose)
 }
 detekt {
     config.setFrom("${rootProject.projectDir}/detekt.yml")

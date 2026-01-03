@@ -8,4 +8,10 @@ sealed class Routes {
 
     @Serializable
     data object Home
+
+    @Serializable
+    data object Search
+
+    @Serializable
+    data class SongDetails(val songId: String)
 }

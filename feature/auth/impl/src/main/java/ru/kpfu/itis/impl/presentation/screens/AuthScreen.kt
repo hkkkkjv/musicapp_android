@@ -1,49 +1,24 @@
 package ru.kpfu.itis.impl.presentation.screens
 
 import androidx.activity.compose.LocalActivity
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
+import ru.kpfu.itis.auth.api.AuthEffect
 import ru.kpfu.itis.auth.api.AuthEvent
 import ru.kpfu.itis.auth.api.AuthState
 import ru.kpfu.itis.core.presentation.components.ErrorDialog
-import ru.kpfu.itis.impl.R
 import ru.kpfu.itis.impl.presentation.mvi.AuthViewModel
 import ru.kpfu.itis.impl.utils.phone.PhoneValidator
-import ru.kpfu.itis.impl.utils.phone.PhoneVisualTransformation
 
 @Composable
 fun AuthScreen(
@@ -53,13 +28,39 @@ fun AuthScreen(
 ) {
     val state by viewModel.state.collectAsState()
     val activity = LocalActivity.current
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(viewModel.effects) {
+        viewModel.effects.collect { effect ->
+            when (effect) {
+                is AuthEffect.ShowError -> {
+                    errorMessage = effect.message
+                }
 
+                is AuthEffect.ShowSuccess -> {
+                }
+
+                is AuthEffect.NavigateToHome -> {
+                    onNavigateToHome()
+                }
+
+                else -> {}
+            }
+        }
+    }
     LaunchedEffect(state) {
         if (state is AuthState.Authenticated) {
             onNavigateToHome()
         }
     }
-
+    if (errorMessage != null) {
+        ErrorDialog(
+            error = errorMessage!!,
+            onDismiss = {
+                errorMessage = null
+                viewModel.onEvent(AuthEvent.OnErrorDismiss)
+            }
+        )
+    }
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
@@ -153,13 +154,7 @@ fun AuthScreen(
             }
 
             is AuthState.Error -> {
-                val errorState = state as AuthState.Error
-                ErrorDialog(
-                    error = errorState.message,
-                    onDismiss = {
-                        viewModel.onEvent(AuthEvent.OnErrorDismiss)
-                    }
-                )
+                CircularProgressIndicator()
             }
 
             is AuthState.Authenticated -> {

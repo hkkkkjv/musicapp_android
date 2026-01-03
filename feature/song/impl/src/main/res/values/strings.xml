@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Music App</string>
+
+    <string name="search_hint">Search song or artist</string>
+    <string name="retry">Retry</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="no_results">No results for "%s"</string>
+    <string name="source_genius">🎵 Genius</string>
+    <string name="source_deezer">♫ Deezer</string>
+
+    <string name="song_details_title">Song details</string>
+    <string name="album_label">Album: </string>
+    <string name="duration_label">Duration: </string>
+    <string name="released_label">Released: </string>
+    <string name="no_preview_available">No preview available</string>
+    <string name="lyrics_title">📜 Lyrics</string>
+    <string name="source_label">Source: </string>
+    <string name="initializing_preview">Initializing preview…</string>
+    <string name="preview_info">🎵 Preview from Deezer (up to 30 seconds)</string>
+    <string name="icon_music">🎵</string>
+    <string name="pause">Pause</string>
+    <string name="play">Play</string>
+</resources>
