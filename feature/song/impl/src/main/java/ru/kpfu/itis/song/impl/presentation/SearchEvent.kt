@@ -1,7 +1,7 @@
 package ru.kpfu.itis.song.impl.presentation
 
-import ru.kpfu.itis.song.api.Song
-import ru.kpfu.itis.song.api.SongSource
+import ru.kpfu.itis.core.domain.models.Song
+import ru.kpfu.itis.core.domain.models.SongSource
 
 sealed class SearchEvent {
     data class OnQueryChanged(val value: String) : SearchEvent()

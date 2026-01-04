@@ -2,7 +2,7 @@
 <resources>
     <string name="app_name">Music App</string>
 
-    <string name="search_hint">Search song or artist</string>
+    <string name="search_hint">Search song</string>
     <string name="retry">Retry</string>
     <string name="dismiss">Dismiss</string>
     <string name="no_results">No results for "%s"</string>
@@ -26,4 +26,12 @@
     <string name="search_failed">Search failed</string>
     <string name="song_id_is_missing">Song id is missing</string>
     <string name="failed_to_load_song">Failed to load song</string>
+    <string name="error_deleting_review">Error deleting review</string>
+    <string name="delete_review">Delete Review?</string>
+    <string name="this_action_cannot_be_undone_your_review_will_be_permanently_deleted">This action cannot be undone. Your review will be permanently deleted.</string>
+    <string name="other_reviews">Other Reviews</string>
+    <string name="user_reviews">User Reviews</string>
+    <string name="your_review">Your Review</string>
+    <string name="duration_seconds">%1$s:%2$s</string>
+    <string name="info">Info</string>
 </resources>

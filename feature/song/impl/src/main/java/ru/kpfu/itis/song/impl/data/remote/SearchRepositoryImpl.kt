@@ -3,12 +3,12 @@ package ru.kpfu.itis.song.impl.data.remote
 import android.util.Log
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import ru.kpfu.itis.core.network.deezer.DeezerApi
-import ru.kpfu.itis.core.network.genius.GeniusApi
+import ru.kpfu.itis.core.data.network.deezer.DeezerApi
+import ru.kpfu.itis.core.data.network.genius.GeniusApi
+import ru.kpfu.itis.core.domain.models.Song
+import ru.kpfu.itis.core.domain.models.SongSource
 import ru.kpfu.itis.song.api.SearchRepository
 import ru.kpfu.itis.song.api.SearchResult
-import ru.kpfu.itis.song.api.Song
-import ru.kpfu.itis.song.api.SongSource
 import javax.inject.Inject
 
 class SearchRepositoryImpl @Inject constructor(
