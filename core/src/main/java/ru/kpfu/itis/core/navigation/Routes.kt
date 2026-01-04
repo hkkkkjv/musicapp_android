@@ -1,4 +1,4 @@
-package ru.kpfu.itis.musicapp.navigation
+package ru.kpfu.itis.core.navigation
 
 import kotlinx.serialization.Serializable
 
@@ -7,7 +7,7 @@ sealed class Routes {
     data object Auth
 
     @Serializable
-    data object Home
+    data object Profile
 
     @Serializable
     data object Search
