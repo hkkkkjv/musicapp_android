@@ -6,11 +6,12 @@ import dagger.Module
 import dagger.Provides
 import ru.kpfu.itis.auth.api.data.AuthRepository
 import ru.kpfu.itis.auth.api.domain.usecase.GetCurrentUserIdUseCase
+import ru.kpfu.itis.auth.api.domain.usecase.LogoutUseCase
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.impl.data.AuthRepositoryImpl
 import ru.kpfu.itis.impl.domain.usecase.CheckPhoneRegisteredUseCase
 import ru.kpfu.itis.impl.domain.usecase.GetCurrentUserIdUseCaseImpl
-import ru.kpfu.itis.impl.domain.usecase.LogoutUseCase
+import ru.kpfu.itis.impl.domain.usecase.LogoutUseCaseImpl
 import ru.kpfu.itis.impl.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.impl.domain.usecase.VerifyCodeUseCase
 import ru.kpfu.itis.impl.presentation.mvi.AuthReducer
@@ -75,8 +76,8 @@ class AuthModule {
     @Singleton
     fun provideLogoutUseCase(
         authRepository: AuthRepository
-    ): LogoutUseCase =
-        LogoutUseCase(authRepository)
+    ): LogoutUseCaseImpl =
+        LogoutUseCaseImpl(authRepository)
 
 
     @Provides
@@ -94,7 +95,13 @@ class AuthModule {
 
     @Provides
     @Singleton
-    fun bindGetSongDetailsUseCase(
+    fun bindGetCurrentUserIdUseCase(
         useCase: GetCurrentUserIdUseCaseImpl
     ): GetCurrentUserIdUseCase = useCase
+
+    @Provides
+    @Singleton
+    fun bindLogoutUseCase(
+        useCase: LogoutUseCaseImpl
+    ): LogoutUseCase = useCase
 }

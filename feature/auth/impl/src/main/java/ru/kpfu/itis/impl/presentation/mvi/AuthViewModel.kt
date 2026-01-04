@@ -28,7 +28,7 @@ import ru.kpfu.itis.core.utils.runSuspendCatching
 import ru.kpfu.itis.impl.R
 import ru.kpfu.itis.impl.data.exceptions.AuthRepositoryException
 import ru.kpfu.itis.impl.domain.usecase.CheckPhoneRegisteredUseCase
-import ru.kpfu.itis.impl.domain.usecase.LogoutUseCase
+import ru.kpfu.itis.impl.domain.usecase.LogoutUseCaseImpl
 import ru.kpfu.itis.impl.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.impl.domain.usecase.VerifyCodeUseCase
 import ru.kpfu.itis.impl.utils.mapping.ErrorMessageMapper
@@ -52,7 +52,7 @@ class AuthViewModel @Inject constructor(
     private val checkPhoneRegisteredUseCase: CheckPhoneRegisteredUseCase,
     private val verifyCodeUseCase: VerifyCodeUseCase,
     private val registerUserUseCase: RegisterUserUseCase,
-    private val logoutUseCase: LogoutUseCase,
+    private val logoutUseCase: LogoutUseCaseImpl,
     private val errorMessageMapper: ErrorMessageMapper,
     private val reducer: AuthReducer = AuthReducer(),
     private val stringProvider: StringProvider,

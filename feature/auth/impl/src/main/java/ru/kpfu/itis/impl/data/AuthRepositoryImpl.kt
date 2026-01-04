@@ -1,6 +1,7 @@
 package ru.kpfu.itis.impl.data
 
 import android.util.Log
+import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
@@ -68,7 +69,7 @@ class AuthRepositoryImpl @Inject constructor(
                 )
             Log.i("registerUser", "START: uid=$uid, username=$username, phone=$phoneNumber")
 
-            val createdAtTimestamp = com.google.firebase.Timestamp.now()
+            val createdAtTimestamp = Timestamp.now()
 
 
             val userMap = mapOf(
@@ -95,7 +96,7 @@ class AuthRepositoryImpl @Inject constructor(
                 username = username,
                 phoneNumber = phoneNumber,
                 photoUrl = firebaseUser.photoUrl?.toString(),
-                createdAt = createdAtTimestamp.seconds
+                createdAt = Timestamp.now()
             )
 
         } catch (e: AuthRepositoryException) {
@@ -127,7 +128,7 @@ class AuthRepositoryImpl @Inject constructor(
                     AuthErrorType.FIREBASE_AUTH_ERROR,
                     Exception("Phone number is null")
                 )
-            return User("", phoneNumber, "", "", 0)
+            return User("", phoneNumber, "", "", Timestamp.now())
         } catch (e: AuthRepositoryException) {
             throw e
         } catch (e: Exception) {
@@ -150,7 +151,7 @@ class AuthRepositoryImpl @Inject constructor(
                 username = "",
                 phoneNumber = phone,
                 photoUrl = null,
-                createdAt = 0L
+                createdAt = Timestamp.now()
             )
 
         } catch (e: AuthRepositoryException) {
@@ -186,7 +187,7 @@ class AuthRepositoryImpl @Inject constructor(
                 phoneNumber = phoneNumber,
                 username = firebaseUser.displayName,
                 photoUrl = firebaseUser.photoUrl?.toString(),
-                createdAt = firebaseUser.metadata?.creationTimestamp ?: 0
+                createdAt = Timestamp.now()
             )
         } catch (e: Exception) {
             Log.e("getCurrentUser", "ERROR: ${e.message}", e)
