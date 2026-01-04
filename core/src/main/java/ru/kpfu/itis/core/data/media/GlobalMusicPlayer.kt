@@ -73,7 +73,7 @@ class GlobalMusicPlayer private constructor(context: Context) {
             exoPlayer?.setMediaItem(mediaItem)
             exoPlayer?.prepare()
             exoPlayer?.play()
-            Log.d("GlobalMusicPlayer", "✅ Playing")
+            Log.d("GlobalMusicPlayer", "Playing")
         } catch (e: Exception) {
             Log.e("GlobalMusicPlayer", "Play error: ${e.message}")
             listeners.forEach { it.onError(e.message ?: "Unknown error") }

@@ -7,10 +7,11 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import ru.kpfu.itis.impl.presentation.mvi.AuthViewModel
 import ru.kpfu.itis.musicapp.AuthStateViewModel
+import ru.kpfu.itis.profile.impl.presentation.ProfileViewModel
 import ru.kpfu.itis.review.impl.presentation.add.ReviewAddViewModel
 import ru.kpfu.itis.review.impl.presentation.details.ReviewDetailsViewModel
-import ru.kpfu.itis.song.impl.presentation.SearchViewModel
 import ru.kpfu.itis.song.impl.presentation.details.SongDetailsViewModel
+import ru.kpfu.itis.song.impl.presentation.search.SearchViewModel
 
 @Module
 abstract class ViewModelModule {
@@ -44,6 +45,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ReviewDetailsViewModel::class)
     abstract fun bindReviewDetailsViewModel(viewModel: ReviewDetailsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    abstract fun bindProfileViewModel(viewModel: ProfileViewModel): ViewModel
 
     @Binds
     abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory

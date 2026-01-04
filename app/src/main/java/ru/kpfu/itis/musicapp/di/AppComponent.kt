@@ -7,6 +7,7 @@ import dagger.Component
 import ru.kpfu.itis.core.di.CoreModule
 import ru.kpfu.itis.impl.di.AuthModule
 import ru.kpfu.itis.musicapp.MainActivity
+import ru.kpfu.itis.profile.impl.di.ProfileModule
 import ru.kpfu.itis.review.impl.di.ReviewModule
 import ru.kpfu.itis.song.impl.di.SongModule
 import javax.inject.Singleton
@@ -20,7 +21,8 @@ import javax.inject.Singleton
         SongModule::class,
         FirebaseModule::class,
         ViewModelModule::class,
-        ReviewModule::class
+        ReviewModule::class,
+        ProfileModule::class,
     ]
 )
 interface AppComponent {
