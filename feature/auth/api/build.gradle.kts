@@ -52,6 +52,10 @@ dependencies {
 
     implementation(libs.kotlin.serialization)
     detektPlugins(libs.detekt.formatting)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+
 }
 
 detekt {

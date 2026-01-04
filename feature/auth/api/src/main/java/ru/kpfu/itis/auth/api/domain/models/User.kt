@@ -1,12 +1,11 @@
 package ru.kpfu.itis.auth.api.domain.models
 
-import kotlinx.serialization.Serializable
+import com.google.firebase.Timestamp
 
-@Serializable
 data class User(
-    val id: String,
-    val phoneNumber: String,
-    val username: String?,
-    val photoUrl: String?,
-    val createdAt: Long
+    val id: String = "",
+    val phoneNumber: String = "",
+    val username: String? = null,
+    val photoUrl: String? = null,
+    val createdAt: Timestamp = Timestamp.now()
 )
