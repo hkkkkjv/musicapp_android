@@ -11,13 +11,12 @@ plugins {
 
 android {
     namespace = "ru.kpfu.itis.review.impl"
-    compileSdk = 36
+    compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 27
+        minSdk = libs.versions.minSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -53,7 +52,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.espresso)
 
     implementation(libs.kotlin.serialization)
-    detektPlugins(libs.detekt.formatting)
 
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
