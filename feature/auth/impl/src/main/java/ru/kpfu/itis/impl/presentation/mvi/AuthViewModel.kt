@@ -19,10 +19,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
-import ru.kpfu.itis.auth.api.AuthEffect
-import ru.kpfu.itis.auth.api.AuthEvent
-import ru.kpfu.itis.auth.api.AuthRepository
-import ru.kpfu.itis.auth.api.AuthState
+import ru.kpfu.itis.auth.api.data.AuthRepository
+import ru.kpfu.itis.auth.api.presentation.AuthEffect
+import ru.kpfu.itis.auth.api.presentation.AuthEvent
+import ru.kpfu.itis.auth.api.presentation.AuthState
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.core.utils.runSuspendCatching
 import ru.kpfu.itis.impl.R

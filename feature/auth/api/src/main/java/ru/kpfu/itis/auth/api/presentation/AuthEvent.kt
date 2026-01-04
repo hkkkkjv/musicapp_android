@@ -1,4 +1,4 @@
-package ru.kpfu.itis.auth.api
+package ru.kpfu.itis.auth.api.presentation
 
 import android.app.Activity
 
