@@ -16,10 +16,10 @@ import ru.kpfu.itis.review.impl.presentation.add.ReviewAddScreen
 import ru.kpfu.itis.review.impl.presentation.add.ReviewAddViewModel
 import ru.kpfu.itis.review.impl.presentation.details.ReviewDetailsScreen
 import ru.kpfu.itis.review.impl.presentation.details.ReviewDetailsViewModel
-import ru.kpfu.itis.song.impl.presentation.SearchScreen
-import ru.kpfu.itis.song.impl.presentation.SearchViewModel
 import ru.kpfu.itis.song.impl.presentation.details.SongDetailsScreen
 import ru.kpfu.itis.song.impl.presentation.details.SongDetailsViewModel
+import ru.kpfu.itis.song.impl.presentation.search.SearchScreen
+import ru.kpfu.itis.song.impl.presentation.search.SearchViewModel
 
 @Composable
 fun AppNavGraph(

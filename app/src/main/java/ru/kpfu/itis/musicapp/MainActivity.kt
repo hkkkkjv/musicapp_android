@@ -17,8 +17,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import ru.kpfu.itis.auth.api.presentation.AuthState
 import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.navigation.Routes
 import ru.kpfu.itis.musicapp.navigation.AppNavGraph
-import ru.kpfu.itis.musicapp.navigation.Routes
 import ru.kpfu.itis.musicapp.ui.theme.MusicAppTheme
 import javax.inject.Inject
 
