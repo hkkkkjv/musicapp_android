@@ -1,6 +1,5 @@
 package ru.kpfu.itis.song.impl.presentation
 
-import android.widget.Toast
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -44,15 +43,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import ru.kpfu.itis.core.network.firebase.analytics.AnalyticsManager
-import ru.kpfu.itis.song.api.Song
-import ru.kpfu.itis.song.api.SongSource
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.domain.models.Song
+import ru.kpfu.itis.core.domain.models.SongSource
+import ru.kpfu.itis.core.presentation.components.InfoDialog
 import ru.kpfu.itis.song.impl.R
-import androidx.compose.ui.res.stringResource
 
 @Composable
 fun SearchScreen(
@@ -63,6 +63,9 @@ fun SearchScreen(
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
     var isSearchFocused by remember { mutableStateOf(false) }
+
+    var showToastDialog by remember { mutableStateOf(false) }
+    var toastMessage by remember { mutableStateOf("") }
 
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
@@ -92,7 +95,8 @@ fun SearchScreen(
                 }
 
                 is SearchEffect.ShowToast -> {
-                    Toast.makeText(context, effect.message, Toast.LENGTH_SHORT).show()
+                    toastMessage = effect.message
+                    showToastDialog = true
                 }
             }
         }
@@ -107,6 +111,12 @@ fun SearchScreen(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
+        InfoDialog(
+            isVisible = showToastDialog,
+            title = stringResource(R.string.info),
+            message = toastMessage,
+            onDismiss = { showToastDialog = false }
+        )
         Box(
             modifier = Modifier
                 .fillMaxWidth()

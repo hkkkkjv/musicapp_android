@@ -2,8 +2,8 @@ package ru.kpfu.itis.song.impl.presentation
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import ru.kpfu.itis.song.api.Song
-import ru.kpfu.itis.song.api.SongSource
+import ru.kpfu.itis.core.domain.models.Song
+import ru.kpfu.itis.core.domain.models.SongSource
 
 data class SearchState(
     val query: String = "",
