@@ -1,4 +1,4 @@
-package ru.kpfu.itis.song.impl.presentation
+package ru.kpfu.itis.song.impl.presentation.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

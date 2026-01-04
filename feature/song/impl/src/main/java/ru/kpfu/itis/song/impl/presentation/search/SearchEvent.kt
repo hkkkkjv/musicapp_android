@@ -1,4 +1,4 @@
-package ru.kpfu.itis.song.impl.presentation
+package ru.kpfu.itis.song.impl.presentation.search
 
 import ru.kpfu.itis.core.domain.models.Song
 import ru.kpfu.itis.core.domain.models.SongSource

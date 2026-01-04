@@ -1,4 +1,4 @@
-package ru.kpfu.itis.song.impl.presentation
+package ru.kpfu.itis.song.impl.presentation.search
 
 sealed class SearchEffect {
     data class LogSearch(val query: String) : SearchEffect()
