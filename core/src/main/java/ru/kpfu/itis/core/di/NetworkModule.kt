@@ -4,13 +4,13 @@ import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
 import ru.kpfu.itis.core.BuildConfig
+import ru.kpfu.itis.core.data.network.GeniusAuthInterceptor
+import ru.kpfu.itis.core.data.network.RetrofitFactory
+import ru.kpfu.itis.core.data.network.deezer.DeezerApi
+import ru.kpfu.itis.core.data.network.genius.GeniusApi
 import ru.kpfu.itis.core.di.qualifiers.DeezerRetrofit
 import ru.kpfu.itis.core.di.qualifiers.GeniusRetrofit
 import ru.kpfu.itis.core.di.qualifiers.GeniusToken
-import ru.kpfu.itis.core.network.GeniusAuthInterceptor
-import ru.kpfu.itis.core.network.RetrofitFactory
-import ru.kpfu.itis.core.network.deezer.DeezerApi
-import ru.kpfu.itis.core.network.genius.GeniusApi
 import javax.inject.Singleton
 
 @Module

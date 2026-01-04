@@ -6,21 +6,22 @@ import androidx.compose.ui.res.stringResource
 import ru.kpfu.itis.core.R
 
 @Composable
-fun ErrorDialog(
+fun InfoDialog(
     isVisible: Boolean,
-    error: String,
+    title: String,
+    message: String,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConfirmDialog(
         isVisible = isVisible,
-        title = stringResource(R.string.dialog_error),
-        message = error,
+        title = title,
+        message = message,
         confirmButtonText = stringResource(R.string.btn_ok),
         dismissButtonText = null,
         onConfirm = onDismiss,
         onDismiss = onDismiss,
-        isDestructive = true,
+        isDestructive = false,
         modifier = modifier
     )
 }

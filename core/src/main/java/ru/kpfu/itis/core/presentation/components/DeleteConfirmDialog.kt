@@ -2,23 +2,23 @@ package ru.kpfu.itis.core.presentation.components
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import ru.kpfu.itis.core.R
 
 @Composable
-fun ErrorDialog(
+fun DeleteConfirmDialog(
     isVisible: Boolean,
-    error: String,
+    title: String = "Delete item?",
+    message: String = "This action cannot be undone.",
+    onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     ConfirmDialog(
         isVisible = isVisible,
-        title = stringResource(R.string.dialog_error),
-        message = error,
-        confirmButtonText = stringResource(R.string.btn_ok),
-        dismissButtonText = null,
-        onConfirm = onDismiss,
+        title = title,
+        message = message,
+        confirmButtonText = "Delete",
+        dismissButtonText = "Cancel",
+        onConfirm = onConfirm,
         onDismiss = onDismiss,
         isDestructive = true,
         modifier = modifier
