@@ -7,6 +7,7 @@ import dagger.Component
 import ru.kpfu.itis.core.di.CoreModule
 import ru.kpfu.itis.impl.di.AuthModule
 import ru.kpfu.itis.musicapp.MainActivity
+import ru.kpfu.itis.review.impl.di.ReviewModule
 import ru.kpfu.itis.song.impl.di.SongModule
 import javax.inject.Singleton
 
@@ -19,6 +20,7 @@ import javax.inject.Singleton
         SongModule::class,
         FirebaseModule::class,
         ViewModelModule::class,
+        ReviewModule::class
     ]
 )
 interface AppComponent {
@@ -28,6 +30,7 @@ interface AppComponent {
         fun application(application: Application): Builder
         fun build(): AppComponent
     }
+
     fun inject(activity: MainActivity)
     val viewModelFactory: ViewModelProvider.Factory
 }

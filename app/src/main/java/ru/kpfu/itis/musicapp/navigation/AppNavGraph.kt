@@ -6,9 +6,13 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import ru.kpfu.itis.core.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
 import ru.kpfu.itis.impl.presentation.mvi.AuthViewModel
 import ru.kpfu.itis.impl.presentation.screens.AuthScreen
+import ru.kpfu.itis.review.impl.presentation.add.ReviewAddScreen
+import ru.kpfu.itis.review.impl.presentation.add.ReviewAddViewModel
+import ru.kpfu.itis.review.impl.presentation.details.ReviewDetailsScreen
+import ru.kpfu.itis.review.impl.presentation.details.ReviewDetailsViewModel
 import ru.kpfu.itis.song.impl.presentation.SearchScreen
 import ru.kpfu.itis.song.impl.presentation.SearchViewModel
 import ru.kpfu.itis.song.impl.presentation.details.SongDetailsScreen
@@ -59,7 +63,39 @@ fun AppNavGraph(
                 viewModel = songDetailsViewModel,
                 songId = songId,
                 onBack = { navController.popBackStack() },
+                onReviewAddClick = { songId ->
+                    navController.navigate(
+                        Routes.ReviewAdd(songId = songId)
+                    )
+                },
+                onReviewDetailsClick = { reviewId ->
+                    navController.navigate(
+                        Routes.ReviewDetails(reviewId = reviewId)
+                    )
+                },
                 analyticsManager = analyticsManager,
+            )
+        }
+        composable<Routes.ReviewAdd> { backStackEntry ->
+            val songId = backStackEntry.arguments?.getString("songId") ?: return@composable
+            val reviewAddViewModel: ReviewAddViewModel = viewModel(factory = viewModelFactory)
+            ReviewAddScreen(
+                viewModel = reviewAddViewModel,
+                songId = songId,
+                onBack = { navController.popBackStack() }
+            )
+        }
+
+        composable<Routes.ReviewDetails> { backStackEntry ->
+            val reviewId = backStackEntry.arguments?.getString("reviewId") ?: return@composable
+            val reviewDetailsViewModel: ReviewDetailsViewModel = viewModel(factory = viewModelFactory)
+            ReviewDetailsScreen(
+                viewModel = reviewDetailsViewModel,
+                reviewId = reviewId,
+                onBack = { navController.popBackStack() },
+                onReviewDeleted = {
+                    navController.popBackStack()
+                }
             )
         }
     }

@@ -3,8 +3,8 @@ package ru.kpfu.itis.musicapp
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ru.kpfu.itis.auth.api.AuthRepository
-import ru.kpfu.itis.auth.api.AuthState
+import ru.kpfu.itis.auth.api.data.AuthRepository
+import ru.kpfu.itis.auth.api.presentation.AuthState
 import javax.inject.Inject
 
 class AuthStateViewModel @Inject constructor(
