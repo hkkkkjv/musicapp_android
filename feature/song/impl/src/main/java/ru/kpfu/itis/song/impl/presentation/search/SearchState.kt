@@ -1,4 +1,4 @@
-package ru.kpfu.itis.song.impl.presentation
+package ru.kpfu.itis.song.impl.presentation.search
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

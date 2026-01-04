@@ -74,7 +74,7 @@ fun SongDetailsScreen(
 
     val scrollState = rememberScrollState()
     val coverSize by animateDpAsState(
-        targetValue = if (scrollState.value <50) 340.dp else 200.dp,
+        targetValue = if (scrollState.value < 50) 340.dp else 200.dp,
         animationSpec = tween(durationMillis = 300),
         label = "cover_animation"
     )

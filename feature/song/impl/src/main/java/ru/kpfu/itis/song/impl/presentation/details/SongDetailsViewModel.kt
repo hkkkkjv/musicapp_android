@@ -130,12 +130,10 @@ class SongDetailsViewModel @Inject constructor(
                     Log.d("DEBUG", "userReview ID: ${userReview?.id}")
                     Log.d("DEBUG", "allReviews count: ${allReviews.size}")
 
-                    // ✅ ТЕПЕРЬ userReview ГАРАНТИРОВАННО актуален
                     val otherReviews = allReviews.filter { review ->
-                        review.id != userReview?.id  // ✅ Правильный фильтр
+                        review.id != userReview?.id
                     }.take(5).toImmutableList()
 
-                    // ✅ Один update с обоими значениями
                     _state.update {
                         it.copy(
                             userReview = userReview,
