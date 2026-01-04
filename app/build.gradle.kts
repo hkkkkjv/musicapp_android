@@ -79,6 +79,8 @@ dependencies {
     implementation(projects.feature.song.impl)
     implementation(projects.feature.review.api)
     implementation(projects.feature.review.impl)
+    implementation(projects.feature.profile.api)
+    implementation(projects.feature.profile.impl)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
