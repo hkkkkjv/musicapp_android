@@ -13,9 +13,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import ru.kpfu.itis.auth.api.AuthEffect
-import ru.kpfu.itis.auth.api.AuthEvent
-import ru.kpfu.itis.auth.api.AuthState
+import ru.kpfu.itis.auth.api.presentation.AuthEffect
+import ru.kpfu.itis.auth.api.presentation.AuthEvent
+import ru.kpfu.itis.auth.api.presentation.AuthState
 import ru.kpfu.itis.core.presentation.components.ErrorDialog
 import ru.kpfu.itis.impl.presentation.mvi.AuthViewModel
 import ru.kpfu.itis.impl.utils.phone.PhoneValidator
@@ -29,11 +29,13 @@ fun AuthScreen(
     val state by viewModel.state.collectAsState()
     val activity = LocalActivity.current
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var showError by remember { mutableStateOf(false) }
     LaunchedEffect(viewModel.effects) {
         viewModel.effects.collect { effect ->
             when (effect) {
                 is AuthEffect.ShowError -> {
                     errorMessage = effect.message
+                    showError = true
                 }
 
                 is AuthEffect.ShowSuccess -> {
@@ -54,8 +56,10 @@ fun AuthScreen(
     }
     if (errorMessage != null) {
         ErrorDialog(
-            error = errorMessage!!,
+            isVisible = showError,
+            error = errorMessage ?: "",
             onDismiss = {
+                showError = false
                 errorMessage = null
                 viewModel.onEvent(AuthEvent.OnErrorDismiss)
             }

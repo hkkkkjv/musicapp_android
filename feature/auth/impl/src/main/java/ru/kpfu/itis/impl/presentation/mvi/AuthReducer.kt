@@ -1,7 +1,7 @@
 package ru.kpfu.itis.impl.presentation.mvi
 
-import ru.kpfu.itis.auth.api.AuthEvent
-import ru.kpfu.itis.auth.api.AuthState
+import ru.kpfu.itis.auth.api.presentation.AuthEvent
+import ru.kpfu.itis.auth.api.presentation.AuthState
 import javax.inject.Inject
 
 class AuthReducer @Inject constructor() {

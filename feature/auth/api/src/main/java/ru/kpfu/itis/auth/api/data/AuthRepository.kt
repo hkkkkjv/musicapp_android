@@ -1,4 +1,6 @@
-package ru.kpfu.itis.auth.api
+package ru.kpfu.itis.auth.api.data
+
+import ru.kpfu.itis.auth.api.domain.models.User
 
 interface AuthRepository {
     suspend fun isPhoneRegistered(phone: String): Boolean

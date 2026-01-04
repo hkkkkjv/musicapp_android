@@ -5,9 +5,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.tasks.await
-import ru.kpfu.itis.auth.api.AuthErrorType
-import ru.kpfu.itis.auth.api.AuthRepository
-import ru.kpfu.itis.auth.api.User
+import ru.kpfu.itis.auth.api.data.AuthRepository
+import ru.kpfu.itis.auth.api.domain.models.User
+import ru.kpfu.itis.auth.api.presentation.AuthErrorType
 import ru.kpfu.itis.impl.data.exceptions.AuthRepositoryException
 import javax.inject.Inject
 

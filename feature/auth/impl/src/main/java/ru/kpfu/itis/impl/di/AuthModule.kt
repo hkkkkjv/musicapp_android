@@ -4,10 +4,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import dagger.Module
 import dagger.Provides
-import ru.kpfu.itis.auth.api.AuthRepository
+import ru.kpfu.itis.auth.api.data.AuthRepository
+import ru.kpfu.itis.auth.api.domain.usecase.GetCurrentUserIdUseCase
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.impl.data.AuthRepositoryImpl
 import ru.kpfu.itis.impl.domain.usecase.CheckPhoneRegisteredUseCase
+import ru.kpfu.itis.impl.domain.usecase.GetCurrentUserIdUseCaseImpl
 import ru.kpfu.itis.impl.domain.usecase.LogoutUseCase
 import ru.kpfu.itis.impl.domain.usecase.RegisterUserUseCase
 import ru.kpfu.itis.impl.domain.usecase.VerifyCodeUseCase
@@ -90,4 +92,9 @@ class AuthModule {
     fun provideAuthReducer(): AuthReducer =
         AuthReducer()
 
+    @Provides
+    @Singleton
+    fun bindGetSongDetailsUseCase(
+        useCase: GetCurrentUserIdUseCaseImpl
+    ): GetCurrentUserIdUseCase = useCase
 }

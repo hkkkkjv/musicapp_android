@@ -1,6 +1,6 @@
 package ru.kpfu.itis.impl.data.exceptions
 
-import ru.kpfu.itis.auth.api.AuthErrorType
+import ru.kpfu.itis.auth.api.presentation.AuthErrorType
 
 class AuthRepositoryException(
     val errorType: AuthErrorType,

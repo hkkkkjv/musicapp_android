@@ -1,4 +1,6 @@
-package ru.kpfu.itis.auth.api
+package ru.kpfu.itis.auth.api.presentation
+
+import ru.kpfu.itis.auth.api.domain.models.User
 
 sealed class AuthEffect {
     data class CheckPhoneRegistration(

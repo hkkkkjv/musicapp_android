@@ -1,6 +1,6 @@
 package ru.kpfu.itis.impl.utils.mapping
 
-import ru.kpfu.itis.auth.api.AuthErrorType
+import ru.kpfu.itis.auth.api.presentation.AuthErrorType
 import ru.kpfu.itis.impl.R
 import javax.inject.Inject
 
