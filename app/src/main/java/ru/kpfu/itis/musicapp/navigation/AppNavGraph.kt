@@ -7,8 +7,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.navigation.Routes
 import ru.kpfu.itis.impl.presentation.mvi.AuthViewModel
 import ru.kpfu.itis.impl.presentation.screens.AuthScreen
+import ru.kpfu.itis.profile.impl.presentation.ProfileScreen
+import ru.kpfu.itis.profile.impl.presentation.ProfileViewModel
 import ru.kpfu.itis.review.impl.presentation.add.ReviewAddScreen
 import ru.kpfu.itis.review.impl.presentation.add.ReviewAddViewModel
 import ru.kpfu.itis.review.impl.presentation.details.ReviewDetailsScreen
@@ -41,6 +44,26 @@ fun AppNavGraph(
             )
         }
 
+        composable<Routes.Profile> {
+            val profileViewModel: ProfileViewModel = viewModel(factory = viewModelFactory)
+            ProfileScreen(
+                viewModel = profileViewModel,
+                onOpenReviewDetails = { reviewId ->
+                    navController.navigate(Routes.ReviewDetails(reviewId = reviewId))
+                },
+                onLogout = {
+                    navController.navigate(Routes.Auth)
+                },
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        //popUpTo(Routes.Auth) { saveState = true }
+                        launchSingleTop = true
+                        //restoreState = true
+                    }
+                },
+            )
+        }
+
         composable<Routes.Search> {
             val searchViewModel: SearchViewModel = viewModel(factory = viewModelFactory)
 
@@ -51,8 +74,14 @@ fun AppNavGraph(
                         Routes.SongDetails(songId = songId)
                     )
                 },
-                analyticsManager = analyticsManager
-
+                analyticsManager = analyticsManager,
+                onNavigate = { route ->
+                    navController.navigate(route) {
+                        //popUpTo(Routes.Auth) { saveState = true }
+                        launchSingleTop = true
+                        //restoreState = true
+                    }
+                },
             )
         }
         composable<Routes.SongDetails> { backStackEntry ->
@@ -88,7 +117,8 @@ fun AppNavGraph(
 
         composable<Routes.ReviewDetails> { backStackEntry ->
             val reviewId = backStackEntry.arguments?.getString("reviewId") ?: return@composable
-            val reviewDetailsViewModel: ReviewDetailsViewModel = viewModel(factory = viewModelFactory)
+            val reviewDetailsViewModel: ReviewDetailsViewModel =
+                viewModel(factory = viewModelFactory)
             ReviewDetailsScreen(
                 viewModel = reviewDetailsViewModel,
                 reviewId = reviewId,
