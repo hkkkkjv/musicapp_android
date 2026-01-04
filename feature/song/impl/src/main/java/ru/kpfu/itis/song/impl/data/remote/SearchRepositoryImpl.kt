@@ -74,8 +74,16 @@ class SearchRepositoryImpl @Inject constructor(
             val deezerSongs = deezerDeferred.await()
 
             val merged = (geniusSongs + deezerSongs)
-                .distinctBy { it.title.lowercase() + "|" + it.artist.lowercase() }
-                .take(30)
+                .partition { it.source == SongSource.GENIUS }
+                .let { (genius, deezer) ->
+                    val geniusMaxEach = 10
+                    val deezerMaxEach = 15
+
+                    val geniusResult = genius.take(geniusMaxEach)
+                    val deezerResult = deezer.take(deezerMaxEach)
+
+                    (geniusResult + deezerResult).take(30)
+                }
 
             SearchResult(query = query, songs = merged)
         }
