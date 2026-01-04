@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class GetCurrentUserIdUseCaseImpl @Inject constructor(
     private val authRepository: AuthRepository
-): GetCurrentUserIdUseCase{
-    override operator fun invoke(): String {
-        return authRepository.getCurrentUser()?.id ?: ""
-    }
+) : GetCurrentUserIdUseCase {
+    override operator fun invoke(): String =
+        authRepository.getCurrentUser()?.id ?: ""
+
 }
