@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="review_title">Review Title</string>
+    <string name="review_description">Description</string>
+    <string name="review_pros">What you liked</string>
+    <string name="review_cons">What could be better</string>
+    <string name="rating">Rating</string>
+    <string name="write_review">Write a Review</string>
+    <string name="edit_review">Edit Review</string>
+    <string name="submit_review">Submit Review</string>
+    <string name="update_review">Update Review</string>
+    <string name="submitting">Submitting…</string>
+
+    <string name="error_title_empty">Title cannot be empty</string>
+    <string name="error_title_too_long">Title must be 1–50 characters</string>
+    <string name="error_description_empty">Description cannot be empty</string>
+    <string name="error_description_too_long">Description must be 1–1000 characters</string>
+    <string name="error_pros_too_long">Pros must be 1–300 characters</string>
+    <string name="error_cons_too_long">Cons must be 1–300 characters</string>
+    <string name="error_rating_invalid">Rating must be 1–5</string>
+
+    <string name="error_loading_data">Failed to load data</string>
+    <string name="error_submitting">Failed to submit review</string>
+    <string name="error_updating">Failed to update review</string>
+    <string name="error_deleting">Failed to delete review</string>
+    <string name="error_unknown">Something went wrong</string>
+    <string name="error_not_authorized">You are not authorized to perform this action</string>
+    <string name="error_not_found">Item not found</string>
+    <string name="star_rating">Star %1$s</string>
+    <string name="unknown_error">Unknown error</string>
+    <string name="back">Back</string>
+    <string name="delete">Delete</string>
+    <string name="star_filled">⭐</string>
+    <string name="star_empty">☆</string>
+    <string name="rating_from_five">" %1$s/5.0"</string>
+    <string name="pros">Pros: </string>
+    <string name="cons">Cons: </string>
+    <string name="pros_with_text">Pros: %1$s</string>
+    <string name="cons_with_text">Cons: %1$s</string>
+    <string name="just_now">just now</string>
+    <string name="minutes_ago_format">%1$s minutes ago</string>
+    <string name="hours_ago_format">%1$s hours ago</string>
+    <string name="days_ago_format">%1$s days ago</string>
+    <string name="long_ago">long ago</string>
+    <string name="error_deleting_review">Error deleting review</string>
+    <string name="delete_review">Delete review</string>
+    <string name="this_action_cannot_be_undone_your_review_will_be_permanently_deleted">This action cannot be undone your review will be permanently deleted</string>
+    <string name="review_details">Review Details</string>
+    <string name="review_rating">%1$s/5.0</string>
+    <string name="failed_to_load_review">Failed to load review</string>
+    <string name="reviewed_by">Reviewed by</string>
+    <string name="edited">Edited</string>
+    <string name="review">Review</string>
+</resources>
