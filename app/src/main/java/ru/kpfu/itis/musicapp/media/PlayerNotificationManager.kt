@@ -6,7 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
-import ru.kpfu.itis.core.media.PlayerNotificationManager
+import ru.kpfu.itis.core.data.media.PlayerNotificationManager
 import ru.kpfu.itis.musicapp.MainActivity
 import ru.kpfu.itis.musicapp.R
 
