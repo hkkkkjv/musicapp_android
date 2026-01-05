@@ -14,6 +14,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "GENIUS_ACCESS_TOKEN=${{ secrets.GENIUS_ACCESS_TOKEN }}" >> local.properties
+      
       - run: chmod +x ./gradlew
       - run: ./gradlew detekt
 
@@ -27,6 +33,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+          
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "GENIUS_ACCESS_TOKEN=${{ secrets.GENIUS_ACCESS_TOKEN }}" >> local.properties
+      
       - run: chmod +x ./gradlew
       - run: ./gradlew testDebugUnitTest
 
@@ -40,6 +52,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
           cache: gradle
+
+      - name: Create local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "GENIUS_ACCESS_TOKEN=${{ secrets.GENIUS_ACCESS_TOKEN }}" >> local.properties
+      
       - run: chmod +x ./gradlew
       - name: Create signing
         env:
