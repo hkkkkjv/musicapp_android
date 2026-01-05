@@ -23,6 +23,8 @@ import ru.kpfu.itis.auth.api.data.AuthRepository
 import ru.kpfu.itis.auth.api.presentation.AuthEffect
 import ru.kpfu.itis.auth.api.presentation.AuthEvent
 import ru.kpfu.itis.auth.api.presentation.AuthState
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.ScreenEvent
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.core.utils.runSuspendCatching
 import ru.kpfu.itis.impl.R
@@ -56,8 +58,15 @@ class AuthViewModel @Inject constructor(
     private val errorMessageMapper: ErrorMessageMapper,
     private val reducer: AuthReducer = AuthReducer(),
     private val stringProvider: StringProvider,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
+    init {
+        analyticsManager.logScreenOpened(
+            screenName = ScreenEvent.AuthScreen.screenName,
+            screenClass = ScreenEvent.AuthScreen.screenClass
+        )
+    }
     private val _state = MutableStateFlow(
         if (authRepository.isLoggedIn()) {
             AuthState.Authenticated(authRepository.getCurrentUser()!!)

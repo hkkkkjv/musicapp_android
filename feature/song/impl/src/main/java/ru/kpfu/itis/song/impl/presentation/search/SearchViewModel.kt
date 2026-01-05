@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.ScreenEvent
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.song.impl.R
 import ru.kpfu.itis.song.impl.domain.SearchSongsUseCase
@@ -19,6 +21,7 @@ import javax.inject.Inject
 class SearchViewModel @Inject constructor(
     private val searchSongsUseCase: SearchSongsUseCase,
     private val stringProvider: StringProvider,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SearchState())
@@ -29,6 +32,13 @@ class SearchViewModel @Inject constructor(
 
     private val _navigation = MutableSharedFlow<SearchNavigation>(replay = 0)
     val navigation: SharedFlow<SearchNavigation> = _navigation
+
+    init {
+        analyticsManager.logScreenOpened(
+            screenName = ScreenEvent.SearchScreen.screenName,
+            screenClass = ScreenEvent.SearchScreen.screenClass
+        )
+    }
 
     fun onEvent(event: SearchEvent) {
         when (event) {
@@ -99,8 +109,9 @@ class SearchViewModel @Inject constructor(
 
         viewModelScope.launch {
             _effects.emit(SearchEffect.LogSearch(trimmedQuery))
+            analyticsManager.logSearchQuery(trimmedQuery)
         }
-
+        analyticsManager.startPerformanceTrace("search_operation")
         _state.update { it.copy(isLoading = true, error = null) }
 
         viewModelScope.launch {
@@ -119,7 +130,8 @@ class SearchViewModel @Inject constructor(
                             isInitialized = true
                         )
                     }
-
+                    analyticsManager.stopPerformanceTrace("search_operation")
+                    analyticsManager.logOperationSuccess("search", 0)
                     if (result.songs.isEmpty()) {
                         viewModelScope.launch {
                             _effects.emit(SearchEffect.ShowToast(stringProvider.getString(R.string.no_songs_found)))
@@ -134,7 +146,8 @@ class SearchViewModel @Inject constructor(
                             isInitialized = true
                         )
                     }
-
+                    analyticsManager.stopPerformanceTrace("search_operation")
+                    analyticsManager.logSearchError(error.message ?: "Unknown error")
                     viewModelScope.launch {
                         _effects.emit(
                             SearchEffect.ShowToast(stringProvider.getString(R.string.search_failed))

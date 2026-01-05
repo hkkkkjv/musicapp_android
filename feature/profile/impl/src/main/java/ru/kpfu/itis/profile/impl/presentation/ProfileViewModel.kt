@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.auth.api.domain.usecase.LogoutUseCase
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.ScreenEvent
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.core.utils.runSuspendCatching
 import ru.kpfu.itis.profile.impl.R
@@ -22,7 +24,8 @@ class ProfileViewModel @Inject constructor(
     private val getUserProfileUseCase: GetUserProfileUseCase,
     private val getUserReviewsUseCase: GetUserReviewsUseCase,
     private val logoutUseCase: LogoutUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val analyticsManager: AnalyticsManager,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ProfileState())
@@ -36,6 +39,10 @@ class ProfileViewModel @Inject constructor(
     }
 
     init {
+        analyticsManager.logScreenOpened(
+            screenName = ScreenEvent.ProfileScreen.screenName,
+            screenClass = ScreenEvent.ProfileScreen.screenClass
+        )
         loadProfile()
     }
 
@@ -66,6 +73,7 @@ class ProfileViewModel @Inject constructor(
                 loadReviewsCount()
             }
                 .onFailure { error ->
+                    analyticsManager.logLoadingError("profile", error.message ?: "Unknown error")
                     Log.i(
                         "ProfileViewModel",
                         error.message ?: stringProvider.getString(R.string.error_load_profile)
