@@ -89,7 +89,7 @@ class ProfileViewModel @Inject constructor(
 
             _state.update { it.copy(reviewsCount = count) }
 
-            if (count > 0) {
+            if (count > 0 && _state.value.reviews.isEmpty()) {
                 loadReviews()
             }
         }
@@ -97,7 +97,12 @@ class ProfileViewModel @Inject constructor(
 
     private fun loadReviews() {
         viewModelScope.launch {
-            _state.update { it.copy(isReviewsLoading = true) }
+            _state.update {
+                it.copy(
+                    isReviewsLoading = true,
+                    reviewsOffset = 0
+                )
+            }
 
             val result = runSuspendCatching {
                 getUserReviewsUseCase(
@@ -110,11 +115,13 @@ class ProfileViewModel @Inject constructor(
                 .onSuccess { reviews ->
                     Log.i("loadReviews", reviews.size.toString())
                     reviews.forEach { review ->
-                        Log.d("loadReviews", "Review: id='${review.id}', " +
-                                "songId='${review.songId}', " +
-                                "rating=${review.rating}, " +
-                                "title='${review.title}', " +
-                                "text='${review.description}'")
+                        Log.d(
+                            "loadReviews", "Review: id='${review.id}', " +
+                                    "songId='${review.songId}', " +
+                                    "rating=${review.rating}, " +
+                                    "title='${review.title}', " +
+                                    "text='${review.description}'"
+                        )
                     }
                     _state.update {
                         it.copy(
@@ -203,6 +210,7 @@ class ProfileViewModel @Inject constructor(
             result
                 .onSuccess {
                     emitEffect(ProfileEffect.Logout)
+                    Log.i("ProfileViewModel", "Logout")
                     _state.update { it.copy(isLoading = false) }
                 }
                 .onFailure { error ->

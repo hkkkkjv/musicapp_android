@@ -45,6 +45,7 @@ class ReviewDetailsViewModel @Inject constructor(
             ReviewDetailsEvent.OnDismissError -> {
                 _state.update { it.copy(error = null) }
             }
+
             ReviewDetailsEvent.OnDeleteClick -> {
                 if (!_state.value.isOwner) {
                     Log.w("ReviewDetails", "User is not owner, cannot delete review")
@@ -52,20 +53,30 @@ class ReviewDetailsViewModel @Inject constructor(
                 }
                 _state.update { it.copy(showDeleteConfirmation = true) }
             }
+
             ReviewDetailsEvent.OnConfirmDelete -> {
                 deleteReview()
             }
+
             ReviewDetailsEvent.OnCancelDelete -> {
                 _state.update { it.copy(showDeleteConfirmation = false) }
             }
+
+            ReviewDetailsEvent.OnRefresh -> loadReview(isRefresh = true)
         }
     }
 
-    private fun loadReview() {
+    private fun loadReview(isRefresh: Boolean = false) {
         val id = reviewId ?: return
 
         viewModelScope.launch {
-            _state.update { it.copy(isLoading = true, error = null) }
+            _state.update {
+                it.copy(
+                    isLoading = if (isRefresh) it.isLoading else true,
+                    isRefreshing = isRefresh,
+                    error = null
+                )
+            }
             runSuspendCatching { getReviewByIdUseCase(id) }
                 .onSuccess { review ->
                     Log.d("ReviewDetails", "Review loaded: ${review.id}")
@@ -77,6 +88,7 @@ class ReviewDetailsViewModel @Inject constructor(
                         it.copy(
                             isLoading = false,
                             review = review,
+                            isRefreshing = false,
                             isOwner = isOwner,
                             isInitialized = true
                         )
@@ -88,6 +100,7 @@ class ReviewDetailsViewModel @Inject constructor(
                     _state.update {
                         it.copy(
                             isLoading = false,
+                            isRefreshing = false,
                             error = stringProvider.getString(R.string.failed_to_load_review),
                             isInitialized = true
                         )

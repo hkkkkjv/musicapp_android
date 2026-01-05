@@ -30,8 +30,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.kpfu.itis.core.navigation.BottomNavigation
-import ru.kpfu.itis.core.navigation.Routes
+import ru.kpfu.itis.core.navigation.bottom.BottomNavigation
+import ru.kpfu.itis.core.navigation.NavKey
+import ru.kpfu.itis.core.navigation.Navigator
 import ru.kpfu.itis.profile.impl.R
 import ru.kpfu.itis.profile.impl.presentation.components.ExpandableSection
 import ru.kpfu.itis.profile.impl.presentation.components.ProfileHeader
@@ -41,9 +42,9 @@ import ru.kpfu.itis.profile.impl.presentation.components.ReviewsSection
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel,
+    navigator: Navigator,
+    currentRoute: NavKey,
     onOpenReviewDetails: (reviewId: String) -> Unit = {},
-    onLogout: () -> Unit = {},
-    onNavigate: (Any) -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -61,7 +62,7 @@ fun ProfileScreen(
 
                 is ProfileEffect.NavigateToReviewDetails -> onOpenReviewDetails(effect.reviewId)
                 ProfileEffect.Logout -> {
-                    onLogout()
+                    navigator.logout()
                 }
             }
         }
@@ -90,8 +91,15 @@ fun ProfileScreen(
         },
         bottomBar = {
             BottomNavigation(
-                currentRoute = Routes.Profile,
-                onNavigate = onNavigate
+                currentRoute = currentRoute,
+                onNavigate = { route ->
+                    if (route is NavKey.Search || route is NavKey.Profile) {
+                        navigator.backStack.clear()
+                        navigator.backStack.add(route)
+                    } else {
+                        navigator.add(route)
+                    }
+                }
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }

@@ -6,4 +6,5 @@ sealed interface ReviewDetailsEvent {
     object OnDeleteClick : ReviewDetailsEvent
     object OnConfirmDelete : ReviewDetailsEvent
     object OnCancelDelete : ReviewDetailsEvent
+    object OnRefresh : ReviewDetailsEvent
 }
