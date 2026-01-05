@@ -61,8 +61,6 @@ androidx-test-espresso = "3.7.0"
 detekt = "1.23.3"
 gradle-secrets="2.0.1"
 material = "1.13.0"
-firebaseAuthKtx = "24.0.1"
-firebaseFirestoreKtx = "26.0.2"
 
 kotlinxCollectionsImmutableVersion = "0.3.8"
 

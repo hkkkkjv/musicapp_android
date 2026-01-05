@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.ScreenEvent
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.core.utils.runSuspendCatching
 import ru.kpfu.itis.review.api.domain.usecases.DeleteReviewUseCase
@@ -26,7 +28,8 @@ class SongDetailsViewModel @Inject constructor(
     private val getReviewsForSongUseCase: GetReviewsForSongUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val getUserReviewUseCase: GetUserReviewUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val analyticsManager: AnalyticsManager,
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(SongDetailsState(isLoading = true))
@@ -43,6 +46,11 @@ class SongDetailsViewModel @Inject constructor(
     fun initialize(songId: String) {
         if (this.songId != null) return
         this.songId = songId
+        analyticsManager.logScreenOpened(
+            screenName = ScreenEvent.SongDetailsScreen.screenName,
+            screenClass = ScreenEvent.SongDetailsScreen.screenClass
+        )
+        analyticsManager.logSongDetailsOpened(songId, "")
         load()
         loadAllReviews()
     }
@@ -85,6 +93,7 @@ class SongDetailsViewModel @Inject constructor(
             }
             return
         }
+        analyticsManager.startPerformanceTrace("load_song_details")
         viewModelScope.launch {
             _state.update { it.copy(isLoading = true, error = null) }
 
@@ -97,7 +106,8 @@ class SongDetailsViewModel @Inject constructor(
                             isInitialized = true
                         )
                     }
-
+                    analyticsManager.stopPerformanceTrace("load_song_details")
+                    analyticsManager.logSongDetailsOpened(song.id, song.title)
                     viewModelScope.launch {
                         _effects.emit(
                             SongDetailsEffect.LogDetailsOpened(song.id, song.title)
@@ -105,6 +115,11 @@ class SongDetailsViewModel @Inject constructor(
                     }
                 }
                 .onFailure { error ->
+                    analyticsManager.stopPerformanceTrace("load_song_details")
+                    analyticsManager.logLoadingError(
+                        "song_details",
+                        error.message ?: "Unknown error"
+                    )
                     _state.update {
                         it.copy(
                             isLoading = false,
@@ -161,6 +176,7 @@ class SongDetailsViewModel @Inject constructor(
                             reviewToDelete = null
                         )
                     }
+                    analyticsManager.logReviewDeleted(reviewId)
                     _effects.emit(SongDetailsEffect.ReviewDeleted)
                 }
                 .onFailure { error ->

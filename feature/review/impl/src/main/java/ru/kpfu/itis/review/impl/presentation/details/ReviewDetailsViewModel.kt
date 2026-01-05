@@ -11,6 +11,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import ru.kpfu.itis.auth.api.domain.usecase.GetCurrentUserIdUseCase
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.ScreenEvent
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.core.utils.runSuspendCatching
 import ru.kpfu.itis.review.api.domain.usecases.DeleteReviewUseCase
@@ -22,7 +24,8 @@ class ReviewDetailsViewModel @Inject constructor(
     private val getReviewByIdUseCase: GetReviewByIdUseCase,
     private val deleteReviewUseCase: DeleteReviewUseCase,
     private val getCurrentUserIdUseCase: GetCurrentUserIdUseCase,
-    private val stringProvider: StringProvider
+    private val stringProvider: StringProvider,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ReviewDetailsState(isLoading = true))
@@ -36,6 +39,10 @@ class ReviewDetailsViewModel @Inject constructor(
     fun initialize(reviewId: String) {
         if (this.reviewId != null) return
         this.reviewId = reviewId
+        analyticsManager.logScreenOpened(
+            screenName = ScreenEvent.ReviewDetailsScreen.screenName,
+            screenClass = ScreenEvent.ReviewDetailsScreen.screenClass
+        )
         loadReview()
     }
 
@@ -68,7 +75,7 @@ class ReviewDetailsViewModel @Inject constructor(
 
     private fun loadReview(isRefresh: Boolean = false) {
         val id = reviewId ?: return
-
+        analyticsManager.startPerformanceTrace("load_review_details")
         viewModelScope.launch {
             _state.update {
                 it.copy(
@@ -83,7 +90,7 @@ class ReviewDetailsViewModel @Inject constructor(
 
                     val currentUserId = getCurrentUserIdUseCase()
                     val isOwner = review.userId == currentUserId
-
+                    analyticsManager.stopPerformanceTrace("load_review_details")
                     _state.update {
                         it.copy(
                             isLoading = false,
@@ -96,6 +103,8 @@ class ReviewDetailsViewModel @Inject constructor(
                 }
 
                 .onFailure { error ->
+                    analyticsManager.stopPerformanceTrace("load_review_details")
+                    analyticsManager.logLoadingError("review_details", error.message ?: "Unknown")
                     Log.e("ReviewDetails", "Error loading review: ${error.message}")
                     _state.update {
                         it.copy(
@@ -116,11 +125,13 @@ class ReviewDetailsViewModel @Inject constructor(
             _state.update { it.copy(isDeleting = true) }
             runSuspendCatching { deleteReviewUseCase(id) }
                 .onSuccess {
+                    analyticsManager.logReviewDeleted(id)
                     Log.d("ReviewDetails", "Review deleted: $id")
                     _state.update { it.copy(isDeleting = false) }
                     _effects.emit(ReviewDetailsEffect.ReviewDeleted)
                 }
                 .onFailure { error ->
+                    analyticsManager.logNonFatalException(error as Exception, "delete_review")
                     Log.e("ReviewDetails", "Error deleting review: ${error.message}")
                     _state.update { it.copy(isDeleting = false, showDeleteConfirmation = false) }
                     _effects.emit(

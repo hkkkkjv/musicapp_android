@@ -94,6 +94,9 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.firestore)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perf)
+
     detektPlugins(libs.detekt.formatting)
 
     implementation(libs.androidx.media3.exoplayer)

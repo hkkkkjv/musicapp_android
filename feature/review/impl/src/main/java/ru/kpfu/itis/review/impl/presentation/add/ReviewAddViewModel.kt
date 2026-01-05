@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
+import ru.kpfu.itis.core.data.network.firebase.analytics.ScreenEvent
 import ru.kpfu.itis.core.domain.models.Review
 import ru.kpfu.itis.core.utils.StringProvider
 import ru.kpfu.itis.core.utils.runSuspendCatching
@@ -28,6 +30,7 @@ class ReviewAddViewModel @Inject constructor(
     private val getSongDetailsUseCase: GetSongDetailsUseCase,
     private val getUserReviewUseCase: GetUserReviewUseCase,
     private val stringProvider: StringProvider,
+    private val analyticsManager: AnalyticsManager
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(ReviewAddState())
@@ -52,6 +55,10 @@ class ReviewAddViewModel @Inject constructor(
     }
 
     private fun initialize(songId: String) {
+        analyticsManager.logScreenOpened(
+            screenName = ScreenEvent.ReviewAddScreen.screenName,
+            screenClass = ScreenEvent.ReviewAddScreen.screenClass
+        )
         _state.update { it.copy(isLoading = true, songId = songId) }
 
         viewModelScope.launch {
@@ -99,6 +106,7 @@ class ReviewAddViewModel @Inject constructor(
                     }
                 }
             } catch (error: Exception) {
+                analyticsManager.logLoadingError("review_add", error.message ?: "Unknown error")
                 _state.update {
                     it.copy(
                         isLoading = false,
@@ -191,6 +199,11 @@ class ReviewAddViewModel @Inject constructor(
 
             result.onSuccess { isNewReview ->
                 if (isNewReview) {
+                    analyticsManager.logReviewCreated(
+                        reviewId = currentState.songId,
+                        songId = currentState.songId,
+                        rating = currentState.rating
+                    )
                     _effects.emit(ReviewAddEffect.ReviewAddAdded)
                 } else {
                     _effects.emit(ReviewAddEffect.ReviewAddUpdated)
@@ -198,6 +211,7 @@ class ReviewAddViewModel @Inject constructor(
                 resetForm()
             }
                 .onFailure { error ->
+                    analyticsManager.logNonFatalException(error as Exception, "submit_review")
                     Log.e("ReviewViewModel", "Error submitting review: ${error.message}")
                     _effects.emit(
                         ReviewAddEffect.ShowError(
@@ -221,6 +235,7 @@ class ReviewAddViewModel @Inject constructor(
 
             result
                 .onSuccess {
+                    analyticsManager.logReviewDeleted(reviewId)
                     _effects.emit(ReviewAddEffect.ReviewAddDeleted)
                     _state.update { it.copy(userReview = null) }
                     resetForm()
