@@ -27,5 +27,6 @@ data class Song(
     val durationSec: Int?,
     @SerialName("popularity")
     val popularity: Int?,
+    @SerialName("lyrics")
     val lyrics: String? = null
 )

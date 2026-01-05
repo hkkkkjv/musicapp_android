@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import dagger.BindsInstance
 import dagger.Component
 import ru.kpfu.itis.core.di.CoreModule
+import ru.kpfu.itis.core.di.DatabaseModule
 import ru.kpfu.itis.impl.di.AuthModule
 import ru.kpfu.itis.musicapp.MainActivity
 import ru.kpfu.itis.profile.impl.di.ProfileModule
@@ -23,6 +24,7 @@ import javax.inject.Singleton
         ViewModelModule::class,
         ReviewModule::class,
         ProfileModule::class,
+        DatabaseModule::class
     ]
 )
 interface AppComponent {
