@@ -9,5 +9,6 @@ data class ReviewDetailsState(
     val error: String? = null,
     val showDeleteConfirmation: Boolean = false,
     val isDeleting: Boolean = false,
-    val isInitialized: Boolean = false
+    val isInitialized: Boolean = false,
+    val isRefreshing: Boolean = false
 )

@@ -1,6 +1,5 @@
-package ru.kpfu.itis.core.navigation
+package ru.kpfu.itis.core.navigation.bottom
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,11 +14,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import ru.kpfu.itis.core.navigation.NavKey
 
 @Composable
 fun BottomNavigation(
-    currentRoute: Any,
-    onNavigate: (Any) -> Unit,
+    currentRoute: NavKey,
+    onNavigate: (NavKey) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -27,7 +27,6 @@ fun BottomNavigation(
             .fillMaxWidth()
             .navigationBarsPadding()
             .height(56.dp)
-
     ) {
         Row(
             modifier = Modifier
@@ -45,7 +44,7 @@ fun BottomNavigation(
                 BottomNavItemView(
                     item = item,
                     isSelected = currentRoute::class == item.route::class,
-                    onClick = { onNavigate(item.route) },
+                    onNavigate = { onNavigate(item.route) },
                     modifier = Modifier.weight(1f)
                 )
             }

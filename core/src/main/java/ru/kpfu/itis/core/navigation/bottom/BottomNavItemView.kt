@@ -1,4 +1,4 @@
-package ru.kpfu.itis.core.navigation
+package ru.kpfu.itis.core.navigation.bottom
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 fun BottomNavItemView(
     item: BottomNavItem,
     isSelected: Boolean,
-    onClick: () -> Unit,
+    onNavigate: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val backgroundColor by animateColorAsState(
@@ -34,7 +34,7 @@ fun BottomNavItemView(
             MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
         } else {
             Color.Transparent
-        }
+        }, label = "bg_color"
     )
 
     val contentColor by animateColorAsState(
@@ -42,14 +42,14 @@ fun BottomNavItemView(
             MaterialTheme.colorScheme.primary
         } else {
             MaterialTheme.colorScheme.onSurfaceVariant
-        }
+        }, label = "content_color"
     )
 
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(12.dp))
             .background(backgroundColor)
-            .clickable(enabled = !isSelected) { onClick() },
+            .clickable(enabled = !isSelected) { onNavigate() },
         contentAlignment = Alignment.Center
     ) {
         Row(

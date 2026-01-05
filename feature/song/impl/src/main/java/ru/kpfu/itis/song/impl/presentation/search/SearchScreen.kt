@@ -31,8 +31,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableList
 import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
 import ru.kpfu.itis.core.domain.models.SongSource
-import ru.kpfu.itis.core.navigation.BottomNavigation
-import ru.kpfu.itis.core.navigation.Routes
+import ru.kpfu.itis.core.navigation.bottom.BottomNavigation
+import ru.kpfu.itis.core.navigation.NavKey
+import ru.kpfu.itis.core.navigation.Navigator
 import ru.kpfu.itis.core.presentation.components.InfoDialog
 import ru.kpfu.itis.song.impl.R
 import ru.kpfu.itis.song.impl.presentation.search.components.SearchInputSection
@@ -41,9 +42,10 @@ import ru.kpfu.itis.song.impl.presentation.search.components.SearchResultsSectio
 @Composable
 fun SearchScreen(
     viewModel: SearchViewModel,
+    navigator: Navigator,
+    currentRoute: NavKey,
     onOpenDetails: (String) -> Unit,
     analyticsManager: AnalyticsManager,
-    onNavigate: (Any) -> Unit,
 ) {
     val state by viewModel.state.collectAsState()
     val context = LocalContext.current
@@ -83,8 +85,15 @@ fun SearchScreen(
         modifier = Modifier.fillMaxSize(),
         bottomBar = {
             BottomNavigation(
-                currentRoute = Routes.Search,
-                onNavigate = onNavigate
+                currentRoute = currentRoute,
+                onNavigate = { route ->
+                    if (route is NavKey.Search || route is NavKey.Profile) {
+                        navigator.backStack.clear()
+                        navigator.backStack.add(route)
+                    } else {
+                        navigator.add(route)
+                    }
+                }
             )
         }
     ) { paddingValues ->
@@ -137,7 +146,6 @@ fun SearchScreen(
                 onDismissError = { viewModel.onEvent(SearchEvent.OnClearError) },
                 onSongClicked = { viewModel.onEvent(SearchEvent.OnSongClicked(it)) }
             )
-
         }
     }
 }

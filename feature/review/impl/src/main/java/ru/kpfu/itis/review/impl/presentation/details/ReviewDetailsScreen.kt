@@ -27,10 +27,14 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.pullrefresh.PullRefreshIndicator
+import androidx.compose.material.pullrefresh.pullRefresh
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -71,7 +75,7 @@ import ru.kpfu.itis.review.impl.R
 import java.text.SimpleDateFormat
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class)
 @Composable
 fun ReviewDetailsScreen(
     viewModel: ReviewDetailsViewModel,
@@ -82,6 +86,11 @@ fun ReviewDetailsScreen(
     val state by viewModel.state.collectAsState()
     val scope = rememberCoroutineScope()
     val scrollState = rememberLazyListState()
+
+    val pullRefreshState = rememberPullRefreshState(
+        refreshing = state.isRefreshing,
+        onRefresh = { viewModel.onEvent(ReviewDetailsEvent.OnRefresh) }
+    )
 
     LaunchedEffect(reviewId) {
         viewModel.initialize(reviewId)
@@ -151,28 +160,41 @@ fun ReviewDetailsScreen(
             )
         }
     ) { padding ->
-        when {
-            state.isLoading -> {
-                Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pullRefresh(pullRefreshState)
+        ) {
+            when {
+                state.isLoading -> {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
+                }
+
+                state.review != null -> {
+                    ReviewDetailsContent(
+                        review = state.review!!,
+                        isDeleting = state.isDeleting,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(padding),
+                        scrollState = scrollState
+                    )
                 }
             }
-
-            state.review != null -> {
-                ReviewDetailsContent(
-                    review = state.review!!,
-                    isDeleting = state.isDeleting,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(padding),
-                    scrollState = scrollState
-                )
-            }
+            PullRefreshIndicator(
+                refreshing = state.isRefreshing,
+                state = pullRefreshState,
+                modifier = Modifier.align(Alignment.TopCenter),
+                backgroundColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
 }

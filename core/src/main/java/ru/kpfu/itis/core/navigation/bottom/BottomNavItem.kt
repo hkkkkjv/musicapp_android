@@ -1,4 +1,4 @@
-package ru.kpfu.itis.core.navigation
+package ru.kpfu.itis.core.navigation.bottom
 
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
@@ -6,27 +6,27 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.graphics.vector.ImageVector
 import ru.kpfu.itis.core.R
+import ru.kpfu.itis.core.navigation.NavKey
 
 
 sealed class BottomNavItem(
-    val route: Any,
+    val route: NavKey,
     val icon: ImageVector,
-    @StringRes
-    val labelResId: Int
+    @StringRes val labelResId: Int
 ) {
-    object Search : BottomNavItem(
-        Routes.Search,
+    data object SearchNav : BottomNavItem(
+        NavKey.Search,
         Icons.Filled.Search,
-        labelResId = R.string.nav_search
+        R.string.nav_search
     )
 
-    object Profile : BottomNavItem(
-        Routes.Profile,
+    data object ProfileNav : BottomNavItem(
+        NavKey.Profile,
         Icons.Filled.Person,
-        labelResId = R.string.nav_profile
+        R.string.nav_profile
     )
 
     companion object {
-        fun items() = listOf(Search, Profile)
+        fun items() = listOf(SearchNav, ProfileNav)
     }
 }
