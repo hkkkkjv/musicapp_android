@@ -51,6 +51,10 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso)
 
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(kotlin("test-junit5"))
+
     implementation(libs.kotlin.serialization)
 
     implementation(libs.dagger)
