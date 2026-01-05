@@ -20,6 +20,7 @@ import ru.kpfu.itis.song.impl.presentation.details.SongDetailsViewModel
 import ru.kpfu.itis.song.impl.presentation.search.SearchScreen
 import ru.kpfu.itis.song.impl.presentation.search.SearchViewModel
 
+@Suppress("LongMethod")
 fun createEntryProvider(
     navigator: Navigator,
     viewModelFactory: ViewModelProvider.Factory,

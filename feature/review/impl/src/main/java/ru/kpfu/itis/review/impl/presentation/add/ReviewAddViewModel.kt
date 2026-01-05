@@ -23,6 +23,7 @@ import ru.kpfu.itis.review.impl.domain.UpdateReviewUseCase
 import ru.kpfu.itis.song.api.GetSongDetailsUseCase
 import javax.inject.Inject
 
+@Suppress("LongParameterList")
 class ReviewAddViewModel @Inject constructor(
     private val addReviewUseCase: AddReviewUseCase,
     private val updateReviewUseCase: UpdateReviewUseCase,

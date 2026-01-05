@@ -16,7 +16,7 @@ class ProfileRepositoryImpl @Inject constructor(
 ) : ProfileRepository {
 
     private val currentUserId: String
-        get() = auth.currentUser?.uid ?: throw Exception("currentUserId error")
+        get() = auth.currentUser?.uid ?: throw Exception()
 
     override suspend fun getUserProfile(): User =
         firestore.collection("users")
@@ -24,7 +24,7 @@ class ProfileRepositoryImpl @Inject constructor(
             .get()
             .await()
             .toObject(User::class.java)
-            ?: throw Exception("getUserProfile error")
+            ?: throw Exception()
 
 
     override suspend fun getUserReviews(limit: Int, offset: Int): List<Review> {

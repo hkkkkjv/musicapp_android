@@ -28,98 +28,111 @@ class SearchRepositoryImpl @Inject constructor(
 
     override suspend fun searchSongs(query: String): SearchResult {
         val cacheKey = query.lowercase().trim()
-        val cachedResult = searchCacheDao.getSearchCache(cacheKey)
 
-        if (cachedResult != null && !isCacheExpired(cachedResult.cachedAt)) {
-            Log.d("SearchRepo", "Cache hit for query: $query")
+        getCachedSearchResult(cacheKey, query)?.let { return it }
 
-            val songIds = try {
-                Json.decodeFromString<List<String>>(cachedResult.songIds)
-            } catch (e: Exception) {
-                emptyList()
-            }
-
-            val cachedSongs = cachedSongDao.getSongsByIds(songIds)
-            if (cachedSongs.size == songIds.size) {
-                return SearchResult(
-                    query = query,
-                    songs = cachedSongs.map { it.toSong() }
-                )
-            }
-        }
         Log.d("SearchRepo", "Cache miss for query: $query - fetching from API")
+        return fetchAndCacheSearchResults(query, cacheKey)
+    }
 
+    private suspend fun getCachedSearchResult(cacheKey: String, originalQuery: String): SearchResult? {
+        val cachedResult = searchCacheDao.getSearchCache(cacheKey) ?: return null
+
+        if (isCacheExpired(cachedResult.cachedAt)) return null
+
+        Log.d("SearchRepo", "Cache hit for query: $originalQuery")
+
+        val songIds = try {
+            Json.decodeFromString<List<String>>(cachedResult.songIds)
+        } catch (e: Exception) {
+            return null
+        }
+
+        val cachedSongs = cachedSongDao.getSongsByIds(songIds)
+        return if (cachedSongs.size == songIds.size) {
+            SearchResult(
+                query = originalQuery,
+                songs = cachedSongs.map { it.toSong() }
+            )
+        } else {
+            null
+        }
+    }
+
+    private suspend fun fetchAndCacheSearchResults(query: String, cacheKey: String): SearchResult {
         return coroutineScope {
-            val geniusDeferred = async {
-                runCatching {
-                    geniusApi.searchSongs(query)
-                        .response
-                        .hits
-                        .map { hit ->
-                            Song(
-                                id = "genius:${hit.result.id}",
-                                title = hit.result.title,
-                                artist = hit.result.primaryArtist.name,
-                                album = null,
-                                coverUrl = hit.result.songArtImageUrl,
-                                previewUrl = null,
-                                source = SongSource.GENIUS,
-                                geniusUrl = hit.result.url,
-                                releaseDate = null,
-                                durationSec = null,
-                                popularity = null
-                            )
-                        }
-                }.getOrElse {
-                    Log.e("SearchRepo", "Genius API error: ${it.message}")
-                    emptyList()
-                }
-            }
-
-            val deezerDeferred = async {
-                runCatching {
-                    deezerApi.searchTracks(query)
-                        .data
-                        .map { track ->
-                            Song(
-                                id = "deezer:${track.id}",
-                                title = track.title,
-                                artist = track.artist.name,
-                                album = track.album?.title,
-                                coverUrl = track.album?.cover,
-                                previewUrl = track.preview,
-                                source = SongSource.DEEZER,
-                                geniusUrl = null,
-                                releaseDate = track.releaseDate,
-                                durationSec = track.duration,
-                                popularity = track.rank
-                            )
-                        }
-                }.getOrElse {
-                    Log.e("SearchRepo", "Deezer API error: ${it.message}")
-                    emptyList()
-                }
-            }
+            val geniusDeferred = async { searchGenius(query) }
+            val deezerDeferred = async { searchDeezer(query) }
 
             val geniusSongs = geniusDeferred.await()
             val deezerSongs = deezerDeferred.await()
 
-            val merged = (geniusSongs + deezerSongs)
-                .partition { it.source == SongSource.GENIUS }
-                .let { (genius, deezer) ->
-                    val geniusMaxEach = 10
-                    val deezerMaxEach = 15
-
-                    val geniusResult = genius.take(geniusMaxEach)
-                    val deezerResult = deezer.take(deezerMaxEach)
-
-                    (geniusResult + deezerResult).take(30)
-                }
-
+            val merged = mergeSongResults(geniusSongs, deezerSongs)
             cacheSearchResults(cacheKey, merged)
 
             SearchResult(query = query, songs = merged)
         }
+    }
+
+    private suspend fun searchGenius(query: String): List<Song> {
+        return runCatching {
+            geniusApi.searchSongs(query)
+                .response
+                .hits
+                .map { hit ->
+                    Song(
+                        id = "genius:${hit.result.id}",
+                        title = hit.result.title,
+                        artist = hit.result.primaryArtist.name,
+                        album = null,
+                        coverUrl = hit.result.songArtImageUrl,
+                        previewUrl = null,
+                        source = SongSource.GENIUS,
+                        geniusUrl = hit.result.url,
+                        releaseDate = null,
+                        durationSec = null,
+                        popularity = null
+                    )
+                }
+        }.getOrElse {
+            Log.e("SearchRepo", "Genius API error: ${it.message}")
+            emptyList()
+        }
+    }
+
+    private suspend fun searchDeezer(query: String): List<Song> {
+        return runCatching {
+            deezerApi.searchTracks(query)
+                .data
+                .map { track ->
+                    Song(
+                        id = "deezer:${track.id}",
+                        title = track.title,
+                        artist = track.artist.name,
+                        album = track.album?.title,
+                        coverUrl = track.album?.cover,
+                        previewUrl = track.preview,
+                        source = SongSource.DEEZER,
+                        geniusUrl = null,
+                        releaseDate = track.releaseDate,
+                        durationSec = track.duration,
+                        popularity = track.rank
+                    )
+                }
+        }.getOrElse {
+            Log.e("SearchRepo", "Deezer API error: ${it.message}")
+            emptyList()
+        }
+    }
+
+    private fun mergeSongResults(geniusSongs: List<Song>, deezerSongs: List<Song>): List<Song> {
+        return (geniusSongs + deezerSongs)
+            .partition { it.source == SongSource.GENIUS }
+            .let { (genius, deezer) ->
+                val geniusResult = genius.take(10)
+                val deezerResult = deezer.take(15)
+                (geniusResult + deezerResult).take(30)
+            }
     }
 
     override suspend fun getSongById(id: String): Song {
@@ -164,7 +177,7 @@ class SearchRepositoryImpl @Inject constructor(
                     val html = response.string()
                     htmlLyricsParser.parseLyricsFromHtml(html)
                 } catch (e: Exception) {
-                    Log.e("SearchRepo", "Ошибка загрузки текста: ${e.message}")
+                    Log.e("SearchRepo", "Error loading text: ${e.message}")
                     null
                 }
                 Song(
@@ -228,7 +241,6 @@ class SearchRepositoryImpl @Inject constructor(
             null
         }
     }
-
 
     private fun cleanPreviewUrl(url: String?): String? {
         if (url == null) return null
