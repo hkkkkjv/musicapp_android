@@ -28,13 +28,13 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideCachedSongDao(db: AppDatabase): CachedSongDao {
-        return db.cachedSongDao()
-    }
+    fun provideCachedSongDao(db: AppDatabase): CachedSongDao =
+        db.cachedSongDao()
+
 
     @Provides
     @Singleton
-    fun provideSearchCacheDao(db: AppDatabase): SearchCacheDao {
-        return db.searchCacheDao()
-    }
+    fun provideSearchCacheDao(db: AppDatabase): SearchCacheDao =
+        db.searchCacheDao()
+
 }

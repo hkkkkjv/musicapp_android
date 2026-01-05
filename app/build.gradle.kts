@@ -147,7 +147,6 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.test.runner)
-    androidTestImplementation(libs.androidx.test.espresso)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     detektPlugins(libs.detekt.formatting)

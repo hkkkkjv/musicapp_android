@@ -54,6 +54,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.test.espresso)
 
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(kotlin("test-junit5"))
     implementation(libs.dagger)
     ksp(libs.dagger.compiler)
 
@@ -78,7 +81,7 @@ dependencies {
     detektPlugins(libs.detekt.formatting)
     implementation(libs.coil)
     implementation(libs.jetbrains.kotlinx.collections.immutable)
-    implementation (libs.jsoup)
+    implementation(libs.jsoup)
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
