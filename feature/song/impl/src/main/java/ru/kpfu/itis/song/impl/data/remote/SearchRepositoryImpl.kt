@@ -136,9 +136,10 @@ class SearchRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getSongById(id: String): Song {
+        val isDeezer = id.startsWith("deezer:")
         val cachedSong = cachedSongDao.getSongById(id)
 
-        if (cachedSong != null && !isCacheExpired(cachedSong.cachedAt)) {
+        if (!isDeezer && cachedSong != null && !isCacheExpired(cachedSong.cachedAt)) {
             Log.d("SearchRepo", "Cache hit for song: $id")
             if (id.startsWith("genius:")) {
                 if (cachedSong.lyrics != null) {
@@ -148,20 +149,15 @@ class SearchRepositoryImpl @Inject constructor(
                     Log.d("SearchRepo", "No lyrics in cache for Genius song: $id - fetching lyrics")
                     return try {
                         val lyrics = fetchGeniusLyrics(cachedSong.geniusUrl!!)
-
                         val updatedCachedSong = cachedSong.copy(lyrics = lyrics)
                         cachedSongDao.insertSong(updatedCachedSong)
                         Log.d("SearchRepo", "Loaded and cached lyrics for: $id")
-
                         updatedCachedSong.toSong()
                     } catch (e: Exception) {
                         Log.e("SearchRepo", "Error loading text for Genius: ${e.message}")
                         cachedSong.toSong()
                     }
                 }
-            } else if (id.startsWith("deezer:")) {
-                Log.d("SearchRepo", "Returning Deezer song from cache: $id")
-                return cachedSong.toSong()
             }
             return cachedSong.toSong()
         }
