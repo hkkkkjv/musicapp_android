@@ -22,7 +22,7 @@ object DatabaseModule {
             AppDatabase::class.java,
             DatabaseConstants.DATABASE_NAME
         )
-            .fallbackToDestructiveMigration()
+            .fallbackToDestructiveMigration(dropAllTables = false)
             .build()
     }
 

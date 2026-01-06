@@ -12,7 +12,7 @@ import ru.kpfu.itis.core.navigation.NavKey
 sealed class BottomNavItem(
     val route: NavKey,
     val icon: ImageVector,
-    @StringRes val labelResId: Int
+    @param:StringRes val labelResId: Int
 ) {
     data object SearchNav : BottomNavItem(
         NavKey.Search,
