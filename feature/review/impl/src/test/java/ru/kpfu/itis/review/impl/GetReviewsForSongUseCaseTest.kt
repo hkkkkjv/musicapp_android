@@ -1,17 +1,17 @@
 package ru.kpfu.itis.review.impl
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
-import org.junit.Before
-import org.junit.Test
-import ru.kpfu.itis.core.domain.models.Review
-import ru.kpfu.itis.review.api.data.ReviewRepository
 import com.google.firebase.Timestamp
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
+import org.junit.Before
+import org.junit.Test
+import ru.kpfu.itis.core.domain.models.Review
+import ru.kpfu.itis.review.api.data.ReviewRepository
 import ru.kpfu.itis.review.impl.domain.GetReviewsForSongUseCaseImpl
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue

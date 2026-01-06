@@ -1,5 +1,6 @@
 package ru.kpfu.itis.impl
 
+import com.google.firebase.Timestamp
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -7,9 +8,8 @@ import org.junit.Before
 import org.junit.Test
 import ru.kpfu.itis.auth.api.data.AuthRepository
 import ru.kpfu.itis.auth.api.domain.models.User
-import kotlin.test.assertEquals
-import com.google.firebase.Timestamp
 import ru.kpfu.itis.impl.domain.usecase.GetCurrentUserIdUseCaseImpl
+import kotlin.test.assertEquals
 
 class GetCurrentUserIdUseCaseTest {
 

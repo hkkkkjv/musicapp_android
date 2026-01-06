@@ -12,7 +12,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.pullrefresh.PullRefreshIndicator
 import androidx.compose.material.pullrefresh.pullRefresh
 import androidx.compose.material.pullrefresh.rememberPullRefreshState
@@ -35,9 +34,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import ru.kpfu.itis.core.navigation.bottom.BottomNavigation
 import ru.kpfu.itis.core.navigation.NavKey
 import ru.kpfu.itis.core.navigation.Navigator
+import ru.kpfu.itis.core.navigation.bottom.BottomNavigation
 import ru.kpfu.itis.profile.impl.R
 import ru.kpfu.itis.profile.impl.presentation.components.ExpandableSection
 import ru.kpfu.itis.profile.impl.presentation.components.ProfileHeader
