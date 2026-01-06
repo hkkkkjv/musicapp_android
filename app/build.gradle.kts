@@ -1,5 +1,7 @@
 import io.gitlab.arturbosch.detekt.Detekt
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
+
 
 plugins {
     alias(libs.plugins.android.application)
@@ -45,7 +47,7 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("keystore.jks")
+            storeFile = rootProject.file("keystore.jks")
             storePassword = project.findProperty("storePassword")?.toString() ?: ""
             keyAlias = project.findProperty("keyAlias")?.toString() ?: ""
             keyPassword = project.findProperty("keyPassword")?.toString() ?: ""

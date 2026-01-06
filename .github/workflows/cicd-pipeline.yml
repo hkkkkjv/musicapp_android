@@ -78,14 +78,10 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
         run: |
-          echo "$KEYSTORE_BASE64" | base64 --decode > app/keystore.jks
-          cat > keystore.properties <<EOF
-          storeFile=keystore.jks
-          storePassword=$KEYSTORE_PASSWORD
-          keyAlias=$KEY_ALIAS
-          keyPassword=$KEY_PASSWORD
-          EOF
-      - run: ./gradlew assembleRelease
+          ./gradlew assembleRelease \
+            -PstorePassword="${{ secrets.KEYSTORE_PASSWORD }}" \
+            -PkeyPassword="${{ secrets.KEY_PASSWORD }}" \
+            -PkeyAlias="${{ secrets.KEY_ALIAS }}"
       - name: Upload to Firebase
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
