@@ -17,7 +17,11 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
-    }
+        maven { url = uri("https://jitpack.io") }
+        maven { url = uri("https://maven.google.com") }
+        maven { url = uri("https://repo1.maven.org/maven2/") }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/releases/")
+        }
 }
 
 rootProject.name = "MusicApp"
