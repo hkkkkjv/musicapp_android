@@ -16,7 +16,13 @@ dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
         google()
+        maven { url = uri("https://repo1.maven.org/maven2/") }
+        maven { url = uri("https://maven.aliyun.com/repository/central") }
+        maven { url = uri("https://maven.aliyun.com/repository/public") }
+        maven { url = uri("https://oss.sonatype.org/content/repositories/releases/") }
+        maven { url = uri("https://repo.spring.io/release") }
         mavenCentral()
+        maven { url = uri("https://jitpack.io") }
     }
 }
 

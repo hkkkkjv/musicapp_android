@@ -42,10 +42,21 @@ android {
             )
         }
     }
+
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file("keystore.jks")
+            storePassword = project.findProperty("storePassword")?.toString() ?: ""
+            keyAlias = project.findProperty("keyAlias")?.toString() ?: ""
+            keyPassword = project.findProperty("keyPassword")?.toString() ?: ""
+        }
+    }
+
     buildTypes {
         release {
             //isMinifyEnabled = true
             //isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
