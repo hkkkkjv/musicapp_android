@@ -97,7 +97,7 @@ class ProfileViewModel @Inject constructor(
 
             _state.update { it.copy(reviewsCount = count) }
 
-            if (count > 0 && _state.value.reviews.isEmpty()) {
+            if (count > 0 && (_state.value.reviews.isEmpty() || _state.value.reviews.size != count)) {
                 loadReviews()
             }
         }

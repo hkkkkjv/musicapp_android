@@ -1,8 +1,8 @@
 package ru.kpfu.itis.song.impl
 
 import com.google.firebase.analytics.FirebaseAnalytics
-import io.mockk.coVerify
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue

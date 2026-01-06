@@ -17,7 +17,6 @@ import javax.inject.Singleton
 @Component(
     modules = [
         CoreModule::class,
-        AppModule::class,
         AuthModule::class,
         SongModule::class,
         FirebaseModule::class,

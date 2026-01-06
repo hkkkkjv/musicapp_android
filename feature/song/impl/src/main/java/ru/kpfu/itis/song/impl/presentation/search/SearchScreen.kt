@@ -31,9 +31,9 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.toImmutableList
 import ru.kpfu.itis.core.data.network.firebase.analytics.AnalyticsManager
 import ru.kpfu.itis.core.domain.models.SongSource
-import ru.kpfu.itis.core.navigation.bottom.BottomNavigation
 import ru.kpfu.itis.core.navigation.NavKey
 import ru.kpfu.itis.core.navigation.Navigator
+import ru.kpfu.itis.core.navigation.bottom.BottomNavigation
 import ru.kpfu.itis.core.presentation.components.InfoDialog
 import ru.kpfu.itis.song.impl.R
 import ru.kpfu.itis.song.impl.presentation.search.components.SearchInputSection

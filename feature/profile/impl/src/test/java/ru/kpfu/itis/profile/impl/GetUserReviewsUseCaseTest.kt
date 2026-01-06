@@ -1,5 +1,6 @@
 package ru.kpfu.itis.profile.impl
 
+import com.google.firebase.Timestamp
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -8,10 +9,9 @@ import org.junit.Before
 import org.junit.Test
 import ru.kpfu.itis.core.domain.models.Review
 import ru.kpfu.itis.profile.api.data.ProfileRepository
+import ru.kpfu.itis.profile.impl.domain.GetUserReviewsUseCase
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
-import com.google.firebase.Timestamp
-import ru.kpfu.itis.profile.impl.domain.GetUserReviewsUseCase
 
 class GetUserReviewsUseCaseTest {
 

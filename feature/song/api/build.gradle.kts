@@ -51,12 +51,18 @@ dependencies {
     implementation(libs.kotlin.serialization)
     detektPlugins(libs.detekt.formatting)
 }
+
 detekt {
     config.setFrom("${rootProject.projectDir}/detekt.yml")
     autoCorrect = false
+}
 
+tasks.withType<Detekt>().configureEach {
     reports {
-        html.required.set(true)
+        html {
+            required.set(true)
+            outputLocation.set(file("build/reports/detekt/detekt.html"))
+        }
         txt.required.set(false)
         xml.required.set(false)
         sarif.required.set(false)

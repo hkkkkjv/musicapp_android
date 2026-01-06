@@ -1,7 +1,6 @@
 package ru.kpfu.itis.song.impl.presentation.details
 
 
-import android.util.Log
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
@@ -12,7 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -88,14 +87,6 @@ fun SongDetailsScreen(
                 isPlaying = isPlayingNow
                 if (durationMs > 0) duration = durationMs.toFloat()
 
-                if (isPlayingNow && state.song != null) {
-                    Log.d("SongDetails", "Showing notification for ${state.song!!.title}")
-//                    notificationManager.showNotification(
-//                        songTitle = state.song!!.title,
-//                        artistName = state.song!!.artist,
-//                        isPlaying = true
-//                    )
-                }
             }
 
             override fun onPositionChanged(position: Long) {
@@ -186,7 +177,7 @@ fun SongDetailsScreen(
                 title = { Text(state.song?.title ?: stringResource(R.string.song_details_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, null)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
