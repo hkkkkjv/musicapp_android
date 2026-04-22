@@ -133,7 +133,7 @@
 - **Язык**: Kotlin 2.2.0
 - **UI Framework**: Jetpack Compose 1.10.0
 - **API уровень**: Android 8 - 15 (API 27-35)
-- **Архитектура**: MVVM + Clean Architecture
+- **Архитектура**: MVI + Clean Architecture
 
 ### Ключевые зависимости
 - **Android Material 3** — современный дизайн и компоненты
@@ -265,7 +265,7 @@ GET https://api.deezer.com/search?q=song_name
 ## 📧 Контакты
 
 - **Email**: hkkkkjv@mail.ru
-- **GitHub**: [@hkkkkjv](https://github.com/your-username)
+- **GitHub**: [@hkkkkjv](https://github.com/hkkkkjv)
 
 ---
 
